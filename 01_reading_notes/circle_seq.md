@@ -15,7 +15,7 @@ Increase almost entirely due to $C \to U$ errors, attributed to guanine lesions.
 
 ## Transcript errors generate a continuous stream of amyloid and prion-like proteins in human cells (2023, preprint)
 - Uses H1 ESCs + derived brain organoids and neurons. They all have a similar error rate of $7-8 \times 10^{-6}$. 
-(H1 ESCs were slightly higher, mostly due to $A \to G$, attributable to $A \to I $ RNA editing.)
+(H1 ESCs were slightly higher, mostly due to $A \to G$, attributable to $A \to I$ RNA editing.)
 - DNA damage can cause the same mistake for multiple transcripts, i.e. is not (always? often?) repaired in the first transcription.
 
 ## The fidelity of transcription in human cells (2022)	
