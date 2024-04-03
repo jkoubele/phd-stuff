@@ -3,3 +3,4 @@ numpy==1.24.4
 scipy==1.13.0
 torch==2.2.0
 tqdm==4.65.0
+support_estimation @ git+https://github.com/jkoubele/support_estimation
