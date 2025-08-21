@@ -10,6 +10,32 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 
 \tikzposterlatexaffectionproofoff
 
+%\usepackage[authoryear]{natbib}
+
+\usepackage[backend=biber,style=authoryear,maxbibnames=1]{biblatex}
+\ExecuteBibliographyOptions{url=false, doi=false, isbn=false}
+\AtEveryBibitem{%
+	\clearfield{volume}%
+	\clearfield{number}%
+	\clearfield{pages}%
+	\clearfield{publisher}%
+	\clearfield{address}%
+	\clearfield{doi}%
+	\clearfield{isbn}%
+	\clearfield{issn}%
+	\clearfield{url}%
+	\clearfield{urldate}%
+	\clearfield{note}%
+}
+
+\renewbibmacro{in:}{%
+	\ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
+\addbibresource{/home/jakub/Desktop/pol-ii-preprint/references.bib}
+
+
+
+
 
 
 %\title{\parbox{\linewidth}{\centering \fontsize{72}{70}\selectfont Measuring changes in the speed of %transcription elongation and intron splicing}}
@@ -88,6 +114,10 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 
 
 \usetitlestyle{Filled}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+
+
 \begin{document}
 	\maketitle % See Section 4.1	
 	 %\node[anchor=west, xshift=72cm, yshift=-10cm] at (TP@title.west) % 
@@ -98,21 +128,27 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 		
 		\block{Introduction}{
 			\begin{itemize}
-				\item \lipsum[1][1-3]
+				\item The speed of RNA polymerase II (Pol II) elongation, measured in the number of nucleotides synthesized per unit of time, plays an important role in RNA metabolism. Changes in Pol II speed can affect several co-transcriptional processes
+				\parencite{munizRNAPolymeraseII2021}.
+				
+					\item A recent study of  \textcite{debesAgeingassociatedChangesTranscriptional2023} showed that organism aging is associated with an increase in Pol II speed, whereas lifespan-prolonging interventions tend to decrease it. 
+					
+					\item We present a novel computational method that jointly estimates changes in the Pol II speed and the speed of intron splicing, using total RNA-seq.
 		
 		
-			\item \lipsum[1][4-6]
+			
 		\end{itemize}
 		}
 		
 		\block{Method}{
 		\begin{itemize}
-				\item \lipsum[1][7-9]		
+				\item   Our method works with total RNA-seq, which consists of both the nascent RNA and mature mRNA. Changes in gene expression affect both the nascent and mature components, while changes in Pol II speed and splicing time affect the nascent RNA only.
+				\item As introns are predominantly present in the nascent RNA (with the exception of intron retention), changes in the intron coverage can be linked to the changes in Pol II speed and splicing time.		
 				
 		\end{itemize}
 		
 		\begin{center}
-			\includegraphics[width=0.7\linewidth]{figures/total_rna_with_bg.png}\\[1ex]
+			\includegraphics[width=0.5\linewidth]{figures/total_rna_with_bg.png}\\[1ex]
 			\small\textbf{Figure 1.} Total RNA-seq
 		\end{center}
 		
@@ -160,10 +196,14 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 		\colorlet{blocktitlebgcolor}{weakBlue}
 		\colorlet{blocktitlefgcolor}{black}
 		\block{References and Acknowledgment}{
-			\begin{itemize}
-				\item Lorem Ipsum references
-				\item Illustrations were created using BioRender.com. The poster was created using tikzposter.		
-			\end{itemize}
+			
+		\printbibliography[heading=none]
+		
+		
+		\noindent\rule{\linewidth}{0.5pt}
+		
+		 Illustrations were created using BioRender.com. The poster was created using tikzposter.		
+	
 			
 	}		
 	\end{columns}
