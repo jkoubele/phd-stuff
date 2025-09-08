@@ -8,7 +8,7 @@
 
 \useinnertheme{circles}
 %Information to be included in the title page:
-\title{Measuring Changes in Pol II Speed \& Splicing Time}
+\title{Measuring Changes in Pol II Speed \& Splicing Time from Total RNA-seq}
 \author{Jakub Koubele}
 \institute{Progress Report}
 \date{9th September, 2025}
@@ -269,7 +269,53 @@
 			where $\sigma(.)$ denotes the logistic (sigmoid) function.
 		\end{itemize}
 	\end{frame}
+
+\begin{frame}
+	\frametitle{Fitting the model}
+	\pause
+	\begin{itemize}
+		\item The model parameters are fitted by maximum likelihood estimation (MLE).
+		\pause
+		\item Loss function (negative log-likelihood) consists of Poisson losses for count data (intron and exon read counts) and loss from intronic reads locations.
+		\pause
+		\item Optimization is performed by quasi-Newton algorithm (L-BFGS).
+		\pause
+		\item Problem: the loss function is not convex (due to the reads location term).
+		\pause
+		\begin{itemize}
+			\item However, a semi-analytical solution exists for a simple case when $\mathbf{x}$ consists of a single factor. In this case, loss minimum is unique.
+			\item Finding guarantees (or counter-examples) for more complex settings remains an open problem. 
+		\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+\begin{frame}
+	\frametitle{Hypothesis testing}
+	\pause
+	\begin{itemize}
+		\item \textbf{Likelihood-ratio test (LRT)}: Fit a restricted model (e.g., with some LFC set to~0). Difference of log-likelihood vs. unrestricted model is used in the $\chi^2$ test.
+		\pause
+		
+		\item \textbf{Wald test}: Assumes a Normal distribution of the parameters under $H_0$. The covariance matrix is estimated as the inverse of the loss Hessian.
+		\begin{itemize}
+			\item Less reliable than LRT (the normality assumption is often violated), but faster to compute.
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
 	
+	
+	\begin{frame}
+		\frametitle{Implementation}
+		\pause
+		\begin{itemize}
+			\item Code is available on GitHub.
+			\item Model is implemented in PyTorch.
+			\item The whole pipeline is orchestrated by Nextflow.
+			\item Containerization via Docker (with images hosted on Docker Hub).
+		\end{itemize}
+	\end{frame}
+		
 	
 	
 	\begin{frame}
