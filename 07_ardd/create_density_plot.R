@@ -44,7 +44,7 @@ p <- ggplot(df, aes(x = x)) +
     axis.line = element_line(color = "black"),
     axis.line.y.right = element_blank(),
     axis.line.x.top = element_blank(),
-    plot.title = element_text(hjust = 0.5, size = 20, face = "bold"),
+    plot.title = element_text(hjust = 0.5, size = 25, face = "bold"),
     legend.position = c(0.35, 0.9),   # move legend more right & slightly down
     legend.justification = c("left", "top")
   ) +
@@ -78,8 +78,8 @@ p <- ggplot(df, aes(x = x)) +
     )
   ) +  theme(
     # Axis titles
-    axis.title.x = element_text(size = 16, face = "bold"),
-    axis.title.y = element_text(size = 16, face = "bold"),
+    axis.title.x = element_text(size = 18, face = "bold"),
+    axis.title.y = element_text(size = 18, face = "bold"),
     
     # Axis tick labels
     axis.text.x  = element_text(size = 14),
@@ -87,7 +87,7 @@ p <- ggplot(df, aes(x = x)) +
     
     # Legend text
     legend.text  = element_text(size = 16),
-    legend.title = element_text(size = 16, face = "bold"),  # only if you had a title
+    legend.title = element_text(size = 16),  # only if you had a title
     
     #
     legend.key.width  = grid::unit(2.0, "lines"),
@@ -99,9 +99,9 @@ p
 
 
 
-ggsave("/home/jakub/Desktop/phd-stuff/07_ardd/density_plot.png", 
+ggsave("/home/jakub/Desktop/phd-stuff/07_ardd/figures/density_plot.png", 
        plot=p,
        bg = 'white',
-       width = 10, 
+       width = 12, 
        height = 8, 
        dpi = 300)

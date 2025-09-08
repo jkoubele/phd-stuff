@@ -1,5 +1,5 @@
 
-\documentclass[25pt, a0paper, portrait, margin=0mm, innermargin=15mm,
+\documentclass[20pt, a0paper, portrait, margin=0mm, innermargin=15mm,
 blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter} 
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -7,6 +7,8 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 \usepackage{tikz}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage{lipsum}
+\usepackage{amsmath}
+
 
 \tikzposterlatexaffectionproofoff
 
@@ -49,7 +51,7 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 
 \title{\parbox{\linewidth}{\centering
 		\fontsize{72}{70}\selectfont
-		Measuring changes in the speed of transcription elongation and intron splicing
+		Measuring changes in the speeds of transcription elongation and intron splicing
 }}
 
 \author{\parbox{\linewidth}{\centering
@@ -128,12 +130,12 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 		
 		\block{Introduction}{
 			\begin{itemize}
-				\item The speed of RNA polymerase II (Pol II) elongation, measured in the number of nucleotides synthesized per unit of time, plays an important role in RNA metabolism. Changes in Pol II speed can affect several co-transcriptional processes
+				\item The speed of RNA polymerase II (Pol II) elongation, measured as the number of nucleotides synthesized per unit of time, plays an important role in RNA metabolism. Changes in Pol II speed can affect several co-transcriptional processes
 				\parencite{munizRNAPolymeraseII2021}.
 				
-					\item A recent study of  \textcite{debesAgeingassociatedChangesTranscriptional2023} showed that organism aging is associated with an increase in Pol II speed, whereas lifespan-prolonging interventions tend to decrease it. 
+					\item A recent study by  \textcite{debesAgeingassociatedChangesTranscriptional2023} showed that organism aging is associated with an increase in Pol II speed, whereas lifespan-prolonging interventions tend to decrease it. 
 					
-					\item We present a novel computational method that jointly estimates changes in the Pol II speed and the speed of intron splicing, using total RNA-seq.
+					\item We present a novel computational method that jointly estimates changes in Pol II elongation speed and intron splicing speed using total RNA-seq data.
 		
 		
 			
@@ -142,14 +144,13 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 		
 		\block{Method}{
 		\begin{itemize}
-				\item   Our method works with total RNA-seq, which consists of both the nascent RNA and mature mRNA. Changes in gene expression affect both the nascent and mature components, while changes in Pol II speed and splicing time affect the nascent RNA only.
-				\item As introns are predominantly present in the nascent RNA (with the exception of intron retention), changes in the intron coverage can be linked to the changes in Pol II speed and splicing time.		
+				\item  Our method works with total RNA-seq, which is a mixture of nascent and mature RNA. Changes in gene expression affect both the nascent and mature components, while changes in Pol II speed and splicing time affect the nascent RNA only.					
 				
 		\end{itemize}
 		
 		\begin{center}
-			\includegraphics[width=0.5\linewidth]{figures/total_rna_with_bg.png}\\[1ex]
-			\small\textbf{Figure 1.} Total RNA-seq
+			\includegraphics[width=0.47\linewidth]{figures/total_rna_with_bg.png}\\[1ex]
+			\small\textbf{Figure 1.} Total RNA-seq.
 		\end{center}
 		
 		
@@ -157,44 +158,102 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 		
 		
 		\begin{itemize}
-			\item \lipsum[1][10-12]
+			\item As introns are predominantly present in the nascent RNA (with the exception of intron retention), changes in the intron coverage can be linked to the changes in Pol II speed and splicing time.	
 			
 		\end{itemize}
 		
 		\begin{center}
-			\includegraphics[width=0.7\linewidth]{figures/pol_ii_speed_figure.png}\\[1ex]
-			\small\textbf{Figure 1.} Total RNA-seq
+			\includegraphics[width=0.81\linewidth]{figures/pol_ii_speed_figure.png}\\[1ex]
+			\small \textbf{Figure 2.}  Effect of the change in Pol II speed. In the condition with a faster polymerase (left), there are fewer polymerases currently transcribing a gene, compared to the condition with a slower polymerase (right). Note that the amount of mature RNA is not affected by the change in elongation speed.
 		\end{center}
 		
 		\begin{itemize}
-			\item \lipsum[1][13-15]
+			\item Intronic reads come from introns that are either still being transcribed or from introns that are fully finished (but not spliced and degraded yet). These two types of introns have different coverage patterns, as transcribing introns will produce reads only in the region that was already transcribed.
 			
 		\end{itemize}
+
+\vspace{1mm}
+\begin{center}
+	\begin{minipage}{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/density_plot.png}\\[1ex]
+		\small\textbf{Figure 3.} Coverage of intron.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.48\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/model_schema.png}\\[1ex]
+		\small\textbf{Figure 4.} Schema of the model.
+	\end{minipage}
+\end{center}
+
+\begin{itemize}
+	\item We used the principles above to derive our model (see our bioRxiv preprint for details). The model consists of:
+	\begin{itemize}
+		\item Vector of explanatory variables $\mathbf{x}$ and logarithm of library size $\ell$, describing each sample.
+		\item Parameter vectors $\boldsymbol{\alpha}$, $\boldsymbol{\beta}$, and $\boldsymbol{\gamma}$, describing log fold-changes (LFC) effects of $\mathbf{x}$ on gene expression, Pol II speed, and intron splicing time, respectively.
+		\item Intercept parameters $c_{\text{exon}}$, $c_{\text{intron}}$ and $\theta$.
+	\end{itemize}
+	\item The model predicts, for every gene, the expected exon read count $\mu$, and for every intron, the intron read count $\nu$ and the fraction of intronic reads originating from currently transcribing introns $\pi$: 
+	$$
+	\mu =  \exp \left( c_{\text{exon}} + \ell +\mathbf{x}^\mathsf{T} \boldsymbol{\alpha} \right)
+	$$ 
+	$$
+	\nu = \exp \left(c_{\text{intron}}+ \ell + \theta + \mathbf{x}^\mathsf{T} \left( \boldsymbol{\alpha} - \boldsymbol{\beta} \right) \right) + \exp \left( c_{\text{intron}} + \ell + \mathbf{x}^\mathsf{T} \left( \boldsymbol{\alpha} + \boldsymbol{\gamma} \right) \right)
+	$$		
+	$$
+	\pi = \sigma \left( \theta -\mathbf{x}^\mathsf{T} \left( \boldsymbol{\beta} + \boldsymbol{\gamma} \right) \right)
+	$$
+	\item The model is fitted by maximum likelihood estimation using exon and intron read counts together with intron coverage (read positions within introns). Parameter significance is assessed with a likelihood ratio test.
+	
+\end{itemize}
+
+
+	
 		
-		\begin{center}
-			\includegraphics[width=0.7\linewidth]{figures/density_plot.png}\\[1ex]
-			\small\textbf{Figure 1.} Total RNA-seq
-		\end{center}
 		
 		
-		
-		}
+}
 		\column{0.5}
 			\block{Results}{\begin{itemize}
-					\item \textbf{Lorem Ipsum...}: 
-				
+				\item We used a publicly available mouse dataset from \textcite{demajoGenomicInstabilityNaturally2021a} to compare myocardium samples of young (12 weeks) wild-type mice with four groups: old (104 weeks) wild-type mice, mice with myocardium-specific knockout of the \textit{Ercc1} gene, a mouse model of Hutchinson–Gilford Progeria Syndrome (HGPS), and \textit{Tert}-deficient mice with reduced telomere length.
 				
 					
 			\end{itemize}
-		}
-		\block{Discussion}{
-		\begin{itemize}
-			\item Lorem Ipsum...
-		\end{itemize}
-	}
 		
-		\colorlet{blocktitlebgcolor}{weakBlue}
-		\colorlet{blocktitlefgcolor}{black}
+			
+			\begin{center}
+				\includegraphics[width=0.89\linewidth]{figures/volcano_all_sharedlegend.png}\\[1ex]
+				\small\textbf{Figure 5.} Volcano plots of L2FC for Pol II speed (left) and intron splicing speed (right), estimated per gene. 
+				L2FC values were clamped to the range $[-5, 5]$, and false discovery rates (FDR) were capped at $10^{-15}$.
+			\end{center}
+			
+		
+		}
+
+\block{Conclusion}{
+	\begin{minipage}{0.75\linewidth}
+		\begin{itemize}
+			\item We present a bioinformatics method that jointly estimates transcription elongation and splicing speed changes from total RNA-seq data.
+			\item An implementation of our method is available at \\
+		\mbox{https://github.com/jkoubele/pol-ii-speed}.
+			
+			\item See also our bioRxiv preprint 
+			"Estimating changes in RNA Polymerase II elongation and intron splicing speeds from total RNA-seq data"
+			(also in the repository above).
+		\end{itemize}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.2\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/qr_code.png}\\[1ex]
+		\footnotesize Link to GitHub repository. 
+	\end{minipage}
+}
+		
+		
+		\colorlet{blocktitlebgcolor}{blue2}
+		\colorlet{blocktitlefgcolor}{white}
 		\block{References and Acknowledgment}{
 			
 		\printbibliography[heading=none]
@@ -221,12 +280,12 @@ blockverticalspace=15mm, colspace=15mm, subcolspace=8mm]{tikzposter}
 	\colorlet{blockbodyfgcolor}{blue2}
 	\block{}{% empty title -> just a body area spanning full width
 		\centering
-		\rule{0.94\textwidth}{0.4pt}
-		\vspace{5mm}
+	%	\rule{0.94\textwidth}{0.4pt}
+	%	\vspace{3mm}
 		
-		\includegraphics[height=30mm]{figures/cecad_logo.png}\hspace{150mm}%
-		\includegraphics[height=30mm]{figures/crc_1678_transparent.png}\hspace{150mm}%
-		\includegraphics[height=30mm]{figures/uni_logo_2.png}%
+		\includegraphics[height=35mm]{figures/cecad_ar_logo.png}\hspace{150mm}%
+		\includegraphics[height=35mm]{figures/crc_1678_transparent.png}\hspace{150mm}%
+		\includegraphics[height=35mm]{figures/uni_logo_2.png}%
 		
 		\vspace{5mm}		
 		\vspace{2mm}
