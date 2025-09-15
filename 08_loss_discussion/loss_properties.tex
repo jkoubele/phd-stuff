@@ -187,12 +187,26 @@
 	$$
 	\beta_j + \gamma_j = \log \left( \frac{\tilde{\pi}_{1j} \left( 1-\tilde{\pi}_{2j}\right)}{\tilde{\pi}_{2j} \left( 1-\tilde{\pi}_{1j}\right)}\right)
 	$$
-	The set of parameters that minimize $\mathcal{L}_{\text{coverage}}$ is therefore not a single point, but a line in the parameter space on which $\beta_j+\gamma_j$ fulfill the equation above (and the $\theta_j$ equals to the derived optimal value).
+	The set of parameters that minimize $\mathcal{L}_{\text{coverage}}$ is therefore not a single point, but a line in the parameter space on which $\beta_j+\gamma_j$ fulfill the equation above (and the $\theta_j$ equals to its derived optimal value).
 	\subsection*{Minimizing $\mathcal{L}_{\text{intron}}$}
 	For sample $i$ in group 1 (so $x_i=0$) and intron $j$, we have
 	$$
-	\nu_{ij} = \exp(d_j + \ell_i + \theta_j) + \exp(d_j)
+	\nu_{ij} = \exp(d_j + \ell_i + \theta_j) + \exp(d_j) = \exp(d_j) \exp(\ell_i) \left( \exp(\theta_j)+1 \right)
 	$$
+	Plugging in the optimal value of $\theta_j$ derived above, and the definition of  $(\ell_i)=\log(s_i)$, we obtain:
+	$$
+	\nu_{ij} = \frac{\exp(d_j) s_i}{1-\tilde{\pi}_{1j}}
+	$$
+	Minimization of Poisson loss for samples in group 1 can be then stated in terms of group-level statistic. We define:
+	$$
+	\tilde{\nu}_{1j} = \frac{\sum_{i: x_i=0} n_{ij}}{\sum_{i: x_i=0} s_i}  
+	$$
+	The MLE solution for $d_j$ can be then written as
+	$$
+	d_j = \log \left( \tilde{\nu}_{1j} \left( 1 - \tilde{\pi}_{1j} \right) \right)
+	$$
+	The equation for $d_j$ follows from the MLE of Poisson distribution with an offset; I again omitted the details for brevity.
+	
 
 	
 	
