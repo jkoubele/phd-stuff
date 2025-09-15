@@ -1,0 +1,208 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage[authoryear]{natbib}
+\bibliographystyle{apalike}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{authblk}
+\usepackage[hidelinks]{hyperref}
+
+
+
+\title{Notes on the MLE for Pol II speed model}
+\author{Jakub Koubele}
+
+\date{15th September, 2025}
+
+\begin{document}	
+	
+	\maketitle
+	
+	\section*{Setup and notation}
+	I will use notation mostly corresponding to the BioRxiv preprint. However, I decided to explicitely index the variables to indicate the level of granularity, which lead to small changes in the notation. I will be using \textbf{bold} text to denote vectors, and normal font for scalars.
+	
+	All parameters and observed data are for given gene (i.e. we are fitting one model per gene). Sample annotations and library sizes are the same for the whole dataset.
+	
+	We have these general indices:
+	
+	\begin{itemize}
+		\item Samples $i=1...S$.
+		\item Introns $j=1...J$.
+	\end{itemize}
+	
+	\textbf{Sample annotation}
+	\begin{itemize}
+		\item Vectors of explanatory variables $\mathbf{x}_i \in \mathbb{R}^p$.
+		\item Library sizes $s_i$, and corresponding logarithms of them $\ell_i = \log(s_i)$.		
+	\end{itemize}
+	
+	\textbf{Model parameters}
+	
+	Gene-level parameters:
+	\begin{itemize}
+		\item $\boldsymbol{\alpha} \in \mathbb{R}^p$, a LFC of gene expression.
+		\item $c$, an intercept term for number of exon reads.		
+	\end{itemize}
+	
+	Intron-level parameters:
+	\begin{itemize}
+		\item $\boldsymbol{\beta}_j \in \mathbb{R}^p$, a LFC of Pol II speed.
+		\item $\boldsymbol{\gamma}_j \in \mathbb{R}^p$, a LFC of splicing time.
+		\item $d_j$, an intercept term for intron reads.
+		\item $\theta_j$, a parameter related to the intercept ratio of transcription and splicing times.			
+	\end{itemize}
+	
+	\textbf{Model predictions}
+	
+	Exon read counts (gene-level):	
+	$$
+	\mu_i =  \exp \left( c + \ell_i +\mathbf{x}_i^\mathsf{T} \boldsymbol{\alpha} \right)
+	$$
+	
+	Intron read count (intron-level):	
+	$$
+	\nu_{ij} = \exp \left(d_j + \ell_i + \theta_j + \mathbf{x}_i^\mathsf{T} \left( \boldsymbol{\alpha} - \boldsymbol{\beta}_j \right) \right) + \exp \left( d_j + \ell_i + \mathbf{x}_i^\mathsf{T} \left( \boldsymbol{\alpha} + \boldsymbol{\gamma}_j \right) \right)
+	$$
+	
+	Mixture coefficient of reads from transcribing introns (intron-level):	
+	$$
+	\pi_{ij} = \sigma \left( \theta_j -\mathbf{x}_i^\mathsf{T} \left( \boldsymbol{\beta}_j + \boldsymbol{\gamma}_j \right) \right)
+	$$
+	
+	Given the mixture coefficient $\pi_{ij}$, the density of read location within an intron $j$ is predicted as:	
+	$$
+	p_{ij}(r) = 1 +\pi_{ij} -2\pi_{ij} r, \quad r \in [0,1]
+	$$
+	
+	\textbf{Data}
+	
+	\begin{itemize}
+	
+
+	\item $y_{i} \in \mathbb{N}_0$ is the read count of exonic reads (gene-level).
+	\item $n_{ij} \in \mathbb{N}_0$ is the read count of intronic reads (intron-level).
+	\item $r_m \in [0,1]$ is the location of intronic read $m \in \{1,\ldots,n_{ij}\}$ from sample $i$ within an intron $j$ (read-level).
+	\end{itemize}	
+	
+	\textbf{Loss function}
+	
+	Recall that the PMF of Poisson distribution with rate parameter $\lambda \in \mathbb{R}^+ $ is
+	
+	$$
+	\text{Pois}(k|\lambda) = \frac{\lambda^k \exp(-\lambda)}{k!}, \quad k \in \mathbb{N}_0
+	$$
+	giving us the negative log-likelihood (NLL) of
+	$$
+	\text{NLL}_{Pois}(k|\lambda) = -\log \left( \text{Pois}(k|\lambda) \right) = \lambda - k \log(\lambda) + \text{const.}
+	$$
+	where the constant term $\log(k!)$ does not depend on the parameter $\lambda$.
+	
+	The losses for exon and intron read counts are the Poisson NLL:
+	$$
+	\mathcal{L}_{\text{exon}} = \sum_{i}^{S} \text{NLL}_{Pois}(y_i|\mu_i) = \sum_{i}^{S}
+	\mu_i - y_i\log \left (\mu_i \right)
+	$$
+	$$
+	\mathcal{L}_{\text{intron}} = \sum_{i}^{S} \sum_{j}^{J} \text{NLL}_{Pois}(n_{ij}|\nu_{ij}) = 
+	\sum_{i}^{S} \sum_{j}^{J} \nu_{ij} - n_{ij}\log \left (\nu_{ij} \right)
+	$$	
+	
+	The coverage loss (NLL of location density of intron reads) is:
+	$$
+	\mathcal{L}_{\text{coverage}} = \sum_{i}^{S}  \sum_{j}^{J} \sum_{m}^{n_{ij}} -\log \left( p(r_m|\pi_{ij})\right) = \sum_{i}^{S}  \sum_{j}^{J} \sum_{m}^{n_{ij}} -\log \left( 
+	1+\pi_{ij}-2\pi_{ij}r_m \right)
+	$$
+	The total loss is then a sum of NLL of exon, intron and coverage components:
+	$$
+	\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{exon}} + \mathcal{L}_{\text{intron}} + \mathcal{L}_{\text{coverage}}
+	$$
+	
+	\section*{Semi-analytical solution for special case}
+	Consider a special case when $\mathbf{x}_i$ consists of a single, one-hot encoded categorical variable. We will show that in this case, the MLE solution can be stated in (almost) closed form.
+	
+	Without loss of generality, we will work with case when the explanatory variable has only 2 categories. The one-hot encoded $\mathbf{x}_i$ can be then represented by a single number $x_i \in \{0,1\}$, with value $0$ for the group 1 and value $1$ for the group 2. Since the vectors in our notation becomes scalars, we will write them in a normal, not a bold font.
+	
+	Instead of explicitly solving for a stationary point of the loss function, we will use the
+	following technique: we will independently minimize each of the components of $\mathcal{L}_{\text{total}}$, i.e.$ \mathcal{L}_{\text{exon}}$, $\mathcal{L}_{\text{intron}}$ and $\mathcal{L}_{\text{coverage}}$. We will show that a configuration of model parameters exists, which simultaneously minimizes each of these components; hence, such solution must also minimize $\mathcal{L}_{\text{total}}$.
+	
+	
+	\subsection*{Minimizing $\mathcal{L}_{\text{exon}}$}
+	
+	We now define the following summary statistics for group 1 (for which we have $x_i=0$):	
+	$$
+	\tilde{\mu}_1 = \frac{\sum_{i: x_i=0} y_i}{\sum_{i: x_i=0} s_i}  
+	$$
+	The same way for group 2, we define:
+	$$
+	\tilde{\mu}_2 = \frac{\sum_{i: x_i=1} y_i}{\sum_{i: x_i=1} s_i}  
+	$$
+	Regarding the used notation: for the group level variables $\tilde{\mu}_1$ and $\tilde{\mu}_2$, distinguished by the tilde symbol from the sample level prediction $\mu_i$, the lower index denote the group (1 or 2), not the sample. We will use the same notation for all group-level variables (distinguished by the tilde symbol).
+	
+	The values of parameters $c$ and $\alpha$ (which are the only parameters influencing $\mu_i$), that minimizes $\mathcal{L}_{\text{exon}}$, can be written in terms of the group level statistics:
+	$$
+	c = \log \left( \tilde{\mu}_1 \right)
+	$$
+	
+	$$
+	\alpha = \log \left( \frac{\tilde{\mu}_2}{\tilde{\mu}_1}  \right)
+	$$
+	
+	I omitted the exact derivation here, which is a a rather standard MLE solution for Poisson regression with single binary regressor and an offset (library size).	
+	
+	
+	\subsection*{Minimizing $\mathcal{L}_{\text{coverage}}$}
+	We will discuss the optimal values of mixing coefficients for intron $j$, which we define as:
+	$$
+	\tilde{\pi}_{1j} = \arg \min \sum_{i: x_i=0}  \sum_{m}^{n_{ij}} -\log \left( 
+	1+\pi_{ij}-2\pi_{ij}r_m \right)
+	$$
+	$$
+	\tilde{\pi}_{2j} = \arg \min \sum_{i: x_i=1}  \sum_{m}^{n_{ij}} -\log \left( 
+	1+\pi_{ij}-2\pi_{ij}r_m \right)
+	$$
+	The values of $\tilde{\pi}_{1j}$ and $\tilde{\pi}_{2j}$  do not generally have a closed-form solution. However, the loss function being minimized is convex in $\pi_{ij}$ (note that $\pi{ij}$ is the same for all samples within the group). Therefore, the values $\tilde{\pi}_{1j} \in [0, 1]$ and $\tilde{\pi}_{2j} \in [0, 1]$ can be easily determined numerically.
+	Also note that $\pi_{ij}$ is not a parameter of the model, but rather an intermediate calculation.
+	
+	Recall that the inverse function to a sigmoid function is
+	$$
+	\sigma^{-1}(z) = \log \left( \frac{z}{1-z}\right)
+	$$	
+	This gives us the value of $\theta_j$ that leads to model prediction of $\tilde{\pi}_{1j}$ for samples in group 1:
+	$$
+	\theta_j = \log \left( \frac{\tilde{\pi}_{1j}}{1-\tilde{\pi}_{1j}}\right)
+	$$
+	The equation above is not defined for $\tilde{\pi}_{1j} \in \{ 0,1\}$. For now, we will assume that $\tilde{\pi}_{1j} \in (0,1)$, and we will return to the undefined cases later on.
+	For group 2, we also want to find a model parameters that would yield the prediction of $\tilde{\pi}_{2j}$. For sample $i$ in group 2 (i.e. $x_i=1$) and intron $j$, we have:
+	$$	
+	\pi_{ij} = \sigma \left( \theta_j - \beta_j - \gamma_j \right) 
+	$$
+	Applying a sigmoid inverse function to both sides gives
+	$$
+	\log \left( \frac{\tilde{\pi}_{2j}}{1-\tilde{\pi}_{2j}}\right) = \theta_j - \beta_j - \gamma_j
+	$$	
+	Similarly above, we will assume that $\tilde{\pi}_{2j} \in (0,1)$ for now.
+	
+	By plugging in the optimal value of $\theta_j$ derived above, we get:
+	$$
+	\beta_j + \gamma_j = \log \left( \frac{\tilde{\pi}_{1j} \left( 1-\tilde{\pi}_{2j}\right)}{\tilde{\pi}_{2j} \left( 1-\tilde{\pi}_{1j}\right)}\right)
+	$$
+	The set of parameters that minimize $\mathcal{L}_{\text{coverage}}$ is therefore not a single point, but a line in the parameter space on which $\beta_j+\gamma_j$ fulfill the equation above (and the $\theta_j$ equals to the derived optimal value).
+	\subsection*{Minimizing $\mathcal{L}_{\text{intron}}$}
+	For sample $i$ in group 1 (so $x_i=0$) and intron $j$, we have
+	$$
+	\nu_{ij} = \exp(d_j + \ell_i + \theta_j) + \exp(d_j)
+	$$
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+\end{document}
