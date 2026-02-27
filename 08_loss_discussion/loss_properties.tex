@@ -19,10 +19,10 @@
 	
 	\maketitle
 	
-	\section*{Setup and notation}
-	I will use notation mostly corresponding to the BioRxiv preprint. However, I decided to explicitely index the variables to indicate the level of granularity, which lead to small changes in the notation. I will be using \textbf{bold} text to denote vectors, and normal font for scalars.
+	\section{Setup and notation}
+	I will use notation mostly corresponding to the BioRxiv preprint. However, I decided to explicitly index the variables to indicate the level of granularity, which led to small changes in the notation. I will be using \textbf{bold} text to denote vectors, and normal font for scalars.
 	
-	All parameters and observed data are for given gene (i.e. we are fitting one model per gene). Sample annotations and library sizes are the same for the whole dataset.
+	All parameters and observed data are for the given gene (i.e., we are fitting one model per gene). Sample annotations and library sizes are the same for the whole dataset.
 	
 	We have these general indices:
 	
@@ -42,7 +42,7 @@
 	Gene-level parameters:
 	\begin{itemize}
 		\item $\boldsymbol{\alpha} \in \mathbb{R}^p$, a LFC of gene expression.
-		\item $c$, an intercept term for number of exon reads.		
+		\item $c$, an intercept term for the number of exon reads.		
 	\end{itemize}
 	
 	Intron-level parameters:
@@ -78,11 +78,11 @@
 	\textbf{Data}
 	
 	\begin{itemize}
-	
-
-	\item $y_{i} \in \mathbb{N}_0$ is the read count of exonic reads (gene-level).
-	\item $n_{ij} \in \mathbb{N}_0$ is the read count of intronic reads (intron-level).
-	\item $r_m \in [0,1]$ is the location of intronic read $m \in \{1,\ldots,n_{ij}\}$ from sample $i$ within an intron $j$ (read-level).
+		
+		
+		\item $y_{i} \in \mathbb{N}_0$ is the read count of exonic reads (gene-level).
+		\item $n_{ij} \in \mathbb{N}_0$ is the read count of intronic reads (intron-level).
+		\item $r_m \in [0,1]$ is the location of intronic read $m \in \{1,\ldots,n_{ij}\}$ from sample $i$ within an intron $j$ (read-level).
 	\end{itemize}	
 	
 	\textbf{Loss function}
@@ -118,28 +118,28 @@
 	\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{exon}} + \mathcal{L}_{\text{intron}} + \mathcal{L}_{\text{coverage}}
 	$$
 	
-	\section*{Semi-analytical solution for special case}
+	\section{Semi-analytical solution for special case}
 	Consider a special case when $\mathbf{x}_i$ consists of a single, one-hot encoded categorical variable. We will show that in this case, the MLE solution can be stated in (almost) closed form.
 	
-	Without loss of generality, we will work with case when the explanatory variable has only 2 categories. The one-hot encoded $\mathbf{x}_i$ can be then represented by a single number $x_i \in \{0,1\}$, with value $0$ for the group 1 and value $1$ for the group 2. Since the vectors in our notation becomes scalars, we will write them in a normal, not a bold font.
+	Without loss of generality, we will work with the case when the explanatory variable has only 2 categories. The one-hot encoded $\mathbf{x}_i$ can then be represented by a single number $x_i \in \{0,1\}$, with value $0$ for group 1 and value $1$ for group 2. Since the vectors in our notation become scalars, we will write them in a normal, not a bold font.
 	
 	Instead of explicitly solving for a stationary point of the loss function, we will use the
-	following technique: we will independently minimize each of the components of $\mathcal{L}_{\text{total}}$, i.e.$ \mathcal{L}_{\text{exon}}$, $\mathcal{L}_{\text{intron}}$ and $\mathcal{L}_{\text{coverage}}$. We will show that a configuration of model parameters exists, which simultaneously minimizes each of these components; hence, such solution must also minimize $\mathcal{L}_{\text{total}}$.
+	following technique: we will independently minimize each of the components of $\mathcal{L}_{\text{total}}$, i.e.$ \mathcal{L}_{\text{exon}}$, $\mathcal{L}_{\text{intron}}$ and $\mathcal{L}_{\text{coverage}}$. We will show that a configuration of model parameters exists, which simultaneously minimizes each of these components; hence, such a solution must also minimize $\mathcal{L}_{\text{total}}$.
 	
 	
-	\subsection*{Minimizing $\mathcal{L}_{\text{exon}}$}
+	\subsection{Minimizing $\mathcal{L}_{\text{exon}}$}
 	
 	We now define the following summary statistics for group 1 (for which we have $x_i=0$):	
 	$$
 	\tilde{\mu}_1 = \frac{\sum_{i: x_i=0} y_i}{\sum_{i: x_i=0} s_i}  
 	$$
-	The same way for group 2, we define:
+	In the same way, for group 2, we define:
 	$$
 	\tilde{\mu}_2 = \frac{\sum_{i: x_i=1} y_i}{\sum_{i: x_i=1} s_i}  
 	$$
-	Regarding the used notation: for the group level variables $\tilde{\mu}_1$ and $\tilde{\mu}_2$, distinguished by the tilde symbol from the sample level prediction $\mu_i$, the lower index denote the group (1 or 2), not the sample. We will use the same notation for all group-level variables (distinguished by the tilde symbol).
+	Regarding the used notation: for the group level variables $\tilde{\mu}_1$ and $\tilde{\mu}_2$, distinguished by the tilde symbol from the sample level prediction $\mu_i$, the lower index denotes the group (1 or 2), not the sample. We will use the same notation for all group-level variables (distinguished by the tilde symbol).
 	
-	The values of parameters $c$ and $\alpha$ (which are the only parameters influencing $\mu_i$), that minimizes $\mathcal{L}_{\text{exon}}$, can be written in terms of the group level statistics:
+	The values of parameters $c$ and $\alpha$ (which are the only parameters influencing $\mu_i$) that minimize $\mathcal{L}_{\text{exon}}$ can be written in terms of the group level statistics:
 	$$
 	c = \log \left( \tilde{\mu}_1 \right)
 	$$
@@ -148,10 +148,10 @@
 	\alpha = \log \left( \frac{\tilde{\mu}_2}{\tilde{\mu}_1}  \right)
 	$$
 	
-	I omitted the exact derivation here, which is a a rather standard MLE solution for Poisson regression with single binary regressor and an offset (library size).	
+	I omitted the exact derivation here, which is a rather standard MLE solution for Poisson regression with a single binary regressor and an offset (library size).	
 	
 	
-	\subsection*{Minimizing $\mathcal{L}_{\text{coverage}}$}
+	\subsection{Minimizing $\mathcal{L}_{\text{coverage}}$}
 	We will discuss the optimal values of mixing coefficients for intron $j$, which we define as:
 	$$
 	\tilde{\pi}_{1j} = \arg \min \sum_{i: x_i=0}  \sum_{m}^{n_{ij}} -\log \left( 
@@ -164,7 +164,7 @@
 	The values of $\tilde{\pi}_{1j}$ and $\tilde{\pi}_{2j}$  do not generally have a closed-form solution. However, the loss function being minimized is convex in $\pi_{ij}$ (note that $\pi{ij}$ is the same for all samples within the group). Therefore, the values $\tilde{\pi}_{1j} \in [0, 1]$ and $\tilde{\pi}_{2j} \in [0, 1]$ can be easily determined numerically.
 	Also note that $\pi_{ij}$ is not a parameter of the model, but rather an intermediate calculation.
 	
-	Recall that the inverse function to a sigmoid function is
+	Recall that the inverse function of a sigmoid function is
 	$$
 	\sigma^{-1}(z) = \log \left( \frac{z}{1-z}\right)
 	$$	
@@ -187,8 +187,8 @@
 	$$
 	\beta_j + \gamma_j = \log \left( \frac{\tilde{\pi}_{1j} \left( 1-\tilde{\pi}_{2j}\right)}{\tilde{\pi}_{2j} \left( 1-\tilde{\pi}_{1j}\right)}\right)
 	$$
-	The set of parameters that minimize $\mathcal{L}_{\text{coverage}}$ is therefore not a single point, but a line in the parameter space on which $\beta_j+\gamma_j$ fulfill the equation above (and the $\theta_j$ equals to its derived optimal value).
-	\subsection*{Minimizing $\mathcal{L}_{\text{intron}}$}
+	The set of parameters that minimize $\mathcal{L}_{\text{coverage}}$ is therefore not a single point, but a line in the parameter space on which $\beta_j+\gamma_j$ fulfill the equation above (and the $\theta_j$ equals its derived optimal value).
+	\subsection{Minimizing $\mathcal{L}_{\text{intron}}$}
 	For sample $i$ in group 1 (so $x_i=0$) and intron $j$, we have
 	$$
 	\nu_{ij} = \exp(d_j + \ell_i + \theta_j) + \exp(d_j) = \exp(d_j) \exp(\ell_i) \left( \exp(\theta_j)+1 \right)
@@ -197,17 +197,77 @@
 	$$
 	\nu_{ij} = \frac{\exp(d_j) s_i}{1-\tilde{\pi}_{1j}}
 	$$
-	Minimization of Poisson loss for samples in group 1 can be then stated in terms of group-level statistic. We define:
+	Minimization of Poisson loss for samples in group 1 can then be stated in terms of a group-level statistic. We define:
 	$$
 	\tilde{\nu}_{1j} = \frac{\sum_{i: x_i=0} n_{ij}}{\sum_{i: x_i=0} s_i}  
 	$$
-	The MLE solution for $d_j$ can be then written as
+	The MLE solution for $d_j$ can then be written as
 	$$
 	d_j = \log \left( \tilde{\nu}_{1j} \left( 1 - \tilde{\pi}_{1j} \right) \right)
 	$$
-	The equation for $d_j$ follows from the MLE of Poisson distribution with an offset; I again omitted the details for brevity.
+	The equation for $d_j$ follows from the MLE of the Poisson distribution with an offset; I again omitted the details for brevity.
 	
-
+	We also define the same group-level statistic for samples in group 2:
+	$$
+	\tilde{\nu}_{2j} = \frac{\sum_{i: x_i=1} n_{ij}}{\sum_{i: x_i=1} s_i}  
+	$$
+	Which gives us (by again solving for MLE of Poisson with offset):
+	$$
+	\tilde{\nu}_{2j} = \exp(d_j + \theta_j +\alpha -\beta_j) + \exp(d_j+\alpha+\gamma_j) 
+	$$
+	By plugging in the equation
+	$$
+	\beta_j = \log \left( \frac{\tilde{\pi}_{1j} \left( 1-\tilde{\pi}_{2j}\right)}{\tilde{\pi}_{2j} \left( 1-\tilde{\pi}_{1j}\right)}\right) - \gamma_j
+	$$
+	which was derived above, as well as equations for $\alpha$, $\theta_j$ and $d_j$, we get:
+	$$
+	\beta_j = \log \left(\frac{\tilde{\mu}_2}{\tilde{\mu}_1}\right) - \log \left(\frac{\tilde{\nu}_{2j}}{\tilde{\nu}_{1j}}\right) + \log \left(\frac{\tilde{\pi}_{1j}}{\tilde{\pi}_{2j}}\right)
+	$$
+	If we plug this result into the equation for $\beta_j+\gamma_j$ derived above, we also obtain
+	$$
+	\gamma_j = -\log \left(\frac{\tilde{\mu}_2}{\tilde{\mu}_1}\right) + \log \left(\frac{\tilde{\nu}_{2j}}{\tilde{\nu}_{1j}}\right) + \log \left(\frac{1-\tilde{\pi}_{2j}}{1-\tilde{\pi}_{1j}}\right)
+	$$
+	\subsection{Summary of solution for special case}
+	Putting the above equations together, we obtained a solution for all model parameters written in terms of group-level statistics:
+	$$
+	c = \log \left( \tilde{\mu}_1 \right)
+	$$	
+	$$
+	\alpha = \log \left( \frac{\tilde{\mu}_2}{\tilde{\mu}_1}  \right)
+	$$
+	$$
+	\theta_j = \log \left( \frac{\tilde{\pi}_{1j}}{1-\tilde{\pi}_{1j}}\right)
+	$$
+	$$
+	d_j = \log \left( \tilde{\nu}_{1j} \left( 1 - \tilde{\pi}_{1j} \right) \right)
+	$$
+	$$
+	\beta_j = \log \left(\frac{\tilde{\mu}_2}{\tilde{\mu}_1}\right) - \log \left(\frac{\tilde{\nu}_{2j}}{\tilde{\nu}_{1j}}\right) + \log \left(\frac{\tilde{\pi}_{1j}}{\tilde{\pi}_{2j}}\right)
+	$$
+	$$
+	\gamma_j = -\log \left(\frac{\tilde{\mu}_2}{\tilde{\mu}_1}\right) + \log \left(\frac{\tilde{\nu}_{2j}}{\tilde{\nu}_{1j}}\right) + \log \left(\frac{1-\tilde{\pi}_{2j}}{1-\tilde{\pi}_{1j}}\right)
+	$$
+	
+	If any of the group-level statistics summarizing read counts is 0, some of the equations above are not defined - in this case, we simply ignore the gene or intron.
+	
+	We will now discuss the cases in which either $\tilde{\pi}_{1j} \in \{0, 1\}$ or $\tilde{\pi}_{2j} \in \{0, 1\}$. In this case, either $\beta_j$ or $\gamma_j$ goes to  $\pm \infty$, while the remaining parameters keep a finite value. This is similar to the case of a logistic regression with a linearly separable dataset - the parameters are pushed to $\pm \infty$, while the loss function is lower-bounded, and its minimum is not achieved for finite values of parameters.
+	
+	
+	\section{Open question}
+	
+	Even though the model parameters may be easily estimated in the special case of a single categorical regressor, the solution of more general cases is unclear. In my current implementation, I am using a numerical optimizer (L-BFGS algorithm) to minimize the loss function. I would like to either provide guarantees for the optimizer, or find a counter-example in which the optimizer may get stuck in a 'bad' local minima.
+	
+	Several related observations and notes:
+	\begin{itemize}
+		\item The loss function is not quasiconvex (and hence not convex). This holds even in the simple case of a single binary regressor, for which we provided the semi-analytical solution above.
+		\item The semi-analytical solution for special case relied on two facts: that we are able to easily solve each of the components $\mathcal{L}_{\text{exon}}$,  $\mathcal{L}_{\text{intron}}$ and $\mathcal{L}_{\text{coverage}}$, and that these solution have a non-empty intersection. In the more general case, this intersection is likely to be empty (however, I did not verify this yet).
+		\item We are also interested in solving modified versions of the optimization problem:
+		\begin{itemize}
+			\item For the likelihood-ratio test (LRT), we want to solve the same problem with one element of one of the LFC vectors ($\boldsymbol{\alpha}$, $\boldsymbol{\beta}_j$, or $\boldsymbol{\gamma}_j$) enforced to always be 0. 
+			\item We may want to parametrize the LFC of Pol II speed or splicing time to be gene-specific instead of intron-specific, i.e., have $\boldsymbol{\beta}_j=\boldsymbol{\beta} \quad  \forall j$ and/or $\boldsymbol{\gamma}_j=\boldsymbol{\gamma} \quad  \forall j$. 
+			
+		\end{itemize}
+	\end{itemize}
 	
 	
 	
@@ -217,6 +277,9 @@
 	
 	
 	
-
+	
+	
+	
+	
 	
 \end{document}
