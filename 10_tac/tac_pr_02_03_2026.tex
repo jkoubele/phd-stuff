@@ -1,10 +1,15 @@
 \documentclass{beamer}
+\usepackage{amsthm}
+\usepackage{amsmath}
 \usetheme{Madrid}
 \setbeamertemplate{navigation symbols}{}%remove navigation symbols
 \useinnertheme{circles}
 %Information to be included in the title page:
 \title{Measuring Causes and Consequences of Errors in RNA 
 }
+
+\graphicspath{{./figures/}}
+
 \author{Jakub Koubele}
 \date{TAC meeting - Progress Report\\2nd March, 2026}
 
@@ -19,15 +24,138 @@
 	
 	\frame{\titlepage}	
 	
-	\begin{frame}
-		\frametitle{Content}		
-		\begin{enumerate}
-			\item Introduction 				
-			\item Measuring errors in RNA
-			\item Polymerase II speed estimation			
-		\end{enumerate}		
-	\end{frame}
+\begin{frame}
+\frametitle{Introduction}	
+	My PhD project consists of two main parts:	
+	\pause
+	\begin{enumerate}
+		\item Statistical model for estimating changes in transcription elongation speed from total RNA-seq data 	
+		\pause			
+		\item Calling of mismatches in transcript from single-cell RNA-seq data, and integration of it with single-cell data analysis.					
+	\end{enumerate}		
+\pause
+The first part turned into a more complex modeling of the RNA metabolism, and I focused almost entirely on it during the last year.
+\end{frame}
+
+\begin{frame}
+	\frametitle{RNA metabolism overview}
+	\pause
+	\begin{center}
+		\includegraphics[width=11cm]{rna_metabolism_2.png}
+	\end{center}
 	
+\end{frame}
+
+\begin{frame}
+	\frametitle{RNA metabolism as a dynamical system}
+	\pause
+	 For a given gene, following molecules are present in the system: 
+	 \pause 
+	 \begin{itemize} 
+	 	\item Nascent and mature transcripts: $T_{\mathrm{nascent}}, \; T_{\mathrm{mature}}$. \pause
+	 	\item Nascent and finished (but unspliced) introns: ${I}_{\mathrm{nascent}}, {I}_{\mathrm{unspliced}}$. 
+	 	\pause 
+ 	\end{itemize}
+	
+
+	
+	\vspace{0.5em}
+	
+	The dynamics may be described by an ODE system:	\pause
+	\begin{align*}
+		\dot{T}_{\mathrm{nascent}} 
+		&= k_{\mathrm{init}}
+		- k_{\mathrm{elong}} \cdot T_{\mathrm{nascent}} \cdot L_{\mathrm{gene}}^{-1} \\		
+		\dot{{I}}_{\mathrm{nascent}} 
+		&= k_{\mathrm{init}}
+		- k_{\mathrm{elong}} \cdot {I}_{\mathrm{nascent}} \, \cdot L_{\mathrm{intron}}^{-1} \\		
+		\dot{T}_{\mathrm{mature}} 
+		&= k_{\mathrm{elong}} \cdot T_{\mathrm{nascent}} \, \cdot L_{\mathrm{gene}}^{-1}
+		- k_{\mathrm{deg}} \cdot T_{\mathrm{mature}} \\		
+		\dot{{I}}_{\mathrm{unspliced}} 
+		&= k_{\mathrm{elong}} \cdot {I}_{\mathrm{nascent}} \, \cdot L_{\mathrm{intron}}^{-1}
+		- k_{\mathrm{splice}} \cdot {I}_{\mathrm{unspliced}}
+	\end{align*}
+where we have
+\begin{itemize}
+	\item Kinetic rates: $[k_{\mathrm{init}}] = \mathrm{polymerases}\cdot \mathrm{s}^{-1}$, $[k_{\mathrm{elong}}]= \mathrm{bp}\cdot \mathrm{s}^{-1}$, 
+	$[k_{\mathrm{splice}}] = \mathrm{s}^{-1}$, $[k_{\mathrm{deg}}] = \mathrm{s}^{-1}$
+	\item Gene and intron lenghts: $[L_{\mathrm{gene}}] = [L_{\mathrm{intron}}] = \mathrm{bp}$
+\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Steady state solution}
+	\pause
+	We may solve the ODE system for steady state solution:
+	\begin{align*}
+		{T}_{\mathrm{nascent}} 
+		&= \frac{k_{\mathrm{init}}}{k_{\mathrm{elong}}} \cdot L_{\mathrm{gene}}  \\[6pt]	
+		{I}_{\mathrm{nascent}} 
+		&= \frac{k_{\mathrm{init}}}{k_{\mathrm{elong}}} \cdot L_{\mathrm{intron}} \\[6pt]	
+		{T}_{\mathrm{mature}} 
+		&= \frac{k_{\mathrm{init}}}{k_{\mathrm{deg}}} \\[6pt]		
+		{I}_{\mathrm{unspliced}} 
+		&= \frac{k_{\mathrm{init}}}{k_{\mathrm{splice}}}
+	\end{align*}
+
+\pause
+\begin{itemize}
+	\item The steady state quantities depends only on the ratios of kinetic rates.
+	\pause
+	\item Therefore, scaling all kinetic rate by some constant $c \in \mathbb{R}_+$ does not change the steady state.
+\end{itemize} 
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Non-identifiability of kinetic rates from steady state}
+	\pause
+	\begin{center}
+		\includegraphics[width=9cm]{invariance_to_scaling.png}
+	\end{center}
+	\pause
+	\begin{itemize}
+		\item Only ratios of kinetic rates, e.g., $\frac{k_{\mathrm{elong}}}{k_{\mathrm{deg}}}$, are identifiable. \pause
+		\item When comparing samples (treatment vs. control), only differences of LFC can be estimated and statistically tested. \pause
+		\item 
+		E.g., we may estimate the value of 
+		$$
+		\mathrm{LFC}(k_{\mathrm{elong}}) - \mathrm{LFC}(k_{\mathrm{deg}})
+		$$
+		and test whether
+		$$
+		\mathrm{LFC}(k_{\mathrm{elong}}) - \mathrm{LFC}(k_{\mathrm{deg}}) = 0
+		$$
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Non-identifiability is a common problem}
+	\pause
+	\begin{itemize}
+		\item Consider an autonomous dynamical system with state vector $\boldsymbol{x}$, and with dynamics
+		$$
+		\dot{\boldsymbol{x}} = f(\boldsymbol{x})
+		$$
+		\pause
+		\item It holds that
+		$$	
+		f(\boldsymbol{x}) = 0 \Leftrightarrow c \cdot f(\boldsymbol{x}) = 0 \quad  \forall c \in \mathbb{R}_+
+		$$
+		\pause 
+		\item Therefore, steady-state data cannot distinguish $f(\boldsymbol{x})$ from $c \cdot f(\boldsymbol{x})$.  
+		Consequently, only ratios of rates are identifiable.
+		\pause
+		\item This type of structural non-identifiability is common in RNA metabolism models.
+	\end{itemize}
+	
+\end{frame}
+
+
 
 	
 	
