@@ -1,6 +1,8 @@
 \documentclass{beamer}
 \usepackage{amsthm}
+\usepackage{xcolor}
 \usepackage{amsmath}
+\usepackage[absolute,overlay]{textpos}
 \usetheme{Madrid}
 \setbeamertemplate{navigation symbols}{}%remove navigation symbols
 \useinnertheme{circles}
@@ -125,9 +127,9 @@ where we have
 		$$
 		\mathrm{LFC}(k_{\mathrm{elong}}) - \mathrm{LFC}(k_{\mathrm{deg}})
 		$$
-		and test whether
+		and test the hypothesis
 		$$
-		\mathrm{LFC}(k_{\mathrm{elong}}) - \mathrm{LFC}(k_{\mathrm{deg}}) = 0
+		\mathrm{H}_{0}: \quad \mathrm{LFC}(k_{\mathrm{elong}}) - \mathrm{LFC}(k_{\mathrm{deg}}) = 0
 		$$
 	\end{itemize}
 \end{frame}
@@ -155,7 +157,78 @@ where we have
 	
 \end{frame}
 
+\begin{frame}
+	\frametitle{Dealing with structural non-identifiability}
+	\pause
+	\begin{itemize}
+		\item Use orthogonal experiment to measure at least one kinetic rate independently.
+		\pause
+		\item Perturb the biological system to obtain non-steady-state observations.
+		\pause
+		\begin{itemize}
+			\item E.g., inhibiting/releasing transcription, and/or using labeled nucleotides. \pause
+			\item Nascent RNA-sequencing with EU-RNA-seq may be especially useful. 
+		\end{itemize}
+	
+	\end{itemize} 
+	
+	
+\end{frame}
 
+
+\begin{frame}
+	\frametitle{Compositional non-identifiability in RNA-seq}
+	\pause
+	\begin{itemize}
+		\item RNA-seq data are compositional: we observe proportions within samples, not absolute abundances. This introduces an additional source of non-identifiability. \pause
+	 \item Let
+	 $$
+	 S_i = \{ \text{RNA molecules in sample } i\}
+	 $$
+	 We are typically interested in some subset $A_i \subset S_i$, and we aim to compare its size between samples, i.e. $\frac{|A_2|}{|A_1|}$.
+	 \pause
+	 \item With RNA-seq, we observe the number of reads $r_i$ corresponding to the molecules of interest, which scales as
+	 $$
+	 r_i \propto \frac{|A_i|}{|S_i|} = \frac{|A_i|}{|A_i|+|A_i^c|}
+	 $$
+	 where $A^c_i$ is a complement of $A_i$ in $S_i$.
+	 \end{itemize}	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Compositional non-identifiability: example}
+Consider the following example of comparing intronic reads (blue) between two samples:
+	\pause
+	\begin{itemize}
+		\item If sample 2 has slower intron splicing, it will contain more intronic reads:
+		\begin{center}
+			\includegraphics[width=7cm]{rna_seq_1.png}
+		\end{center}
+	\pause
+	\item If sample 2 has faster RNA degradation, it will contain fewer exonic reads:
+	\begin{center}
+		\includegraphics[width=7cm]{rna_seq_2.png}
+	\end{center}
+	\pause
+	\item In both cases, the fraction of intronic reads is identical, making the two scenarios indistinguishable from RNA-seq data.
+	\end{itemize}	
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{The End}
+	\begin{center}
+		{\Large Thank you for your attention!}
+	\end{center}
+
+
+
+\begin{textblock*}{\textwidth}(125pt,\dimexpr\paperheight-0.7cm)
+	\centering
+	{\tiny Figures were created using BioRender.com.}
+\end{textblock*}
+\end{frame}
 
 	
 	
