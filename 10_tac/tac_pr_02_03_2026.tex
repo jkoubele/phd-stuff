@@ -166,8 +166,7 @@ where we have
 		\item Perturb the biological system to obtain non-steady-state observations.
 		\pause
 		\begin{itemize}
-			\item E.g., inhibiting/releasing transcription, and/or using labeled nucleotides. \pause
-			\item Nascent RNA-sequencing with EU-RNA-seq may be especially useful. 
+			\item E.g., inhibiting/releasing transcription, and/or using labeled nucleotides. 
 		\end{itemize}
 	
 	\end{itemize} 
@@ -214,6 +213,23 @@ Consider the following example of comparing intronic reads (blue) between two sa
 	\item In both cases, the fraction of intronic reads is identical, making the two scenarios indistinguishable from RNA-seq data.
 	\end{itemize}	
 	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion \& open questions}
+	\pause
+	\begin{itemize}
+		\item Estimating changes in RNA kinetic rates from total RNA-seq data poses two non-identifiability problems:
+		\pause
+		\begin{itemize}
+			\item Structural non-identifiability: the underlying dynamical system cannot be identified from steady-state data.
+			\pause
+			\item Compositional non-identifiability: arises because RNA-seq measures only relative abundances within a sample.
+		\end{itemize}
+		\item To overcome these issues, we need either additional measurements, and/or different types of data than total RNA-seq.
+	\end{itemize}	
+	\pause
+
 \end{frame}
 
 \begin{frame}
