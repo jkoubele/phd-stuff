@@ -45,7 +45,7 @@
 	\begin{itemize}
 		\item Poly(A) site: cannonical AAUAAA motif.
 		\item When Pol II reaches it, it keeps transcribing.
-		\item Protein complex cut RNA there; poly(A) polymerase (PAP) adds ~ 200 As.
+		\item Protein complex cut RNA there; poly(A) polymerase (PAP) adds $\sim 200$ As.
 		\item Transcription termination:
 		\begin{itemize}
 				\item Torpedo model: Exonuclease XRN2 start chewing the 5' end of RNA still transcribed by Pol II $\to$ when it catches Pol II, it knocks it of DNA.
@@ -54,7 +54,7 @@
 	\end{itemize}
 	
 	\section{Results}
-	\subsection{Development of a multimodal direct pre-mRNA sequencing technique}
+	\subsection{Development of a multimodal direct pre-mRNA sequencing technique + dFORCE distinguishes endogenously polyadenylated pre-mRNA}
 	\begin{itemize}
 		\item Need to distinguish whether pre-mRNA has a poly(A) tail:
 		\begin{itemize}
@@ -66,10 +66,32 @@
 		\item 95\% of pre-mRNA\textsuperscript{e} have unspliced introns, while this is only 58\% for  pre-mRNA\textsuperscript{a}.
 		\item Nanopore sequencing requires poly(A) tail $\to$ added artificially during library preparation. This \textit{in vitro} poly(A) tail is shorter (20-80nt), so they get bimodal distribution of tail lengths, and classify by cut-off.
 		\begin{itemize}
-			\item Also, the reads classified as pre-mRNA\textsuperscript{a} have the start of poly(A) highly enriched by known poly(A) sites.
-		\end{itemize}
-		
+			\item Also, the reads classified as pre-mRNA\textsuperscript{a} have the start of poly(A) highly enriched by known poly(A) sites.			
+		\end{itemize}		
 	\end{itemize}
+	
+	\subsection{The landscape of pre-mRNA 3' polyadenylation}
+	\begin{itemize}
+		\item They detect 42k poly(A) sites (PAS) across 11.6k protein-coding genes.
+		\item Detected PAS mostly agreed with annotated PAS, the \underline{AAUAAA} signal, and were also detected by total RNA-seq.
+		\item About 18\% of PAS were in introns (mostly downstream from canonical sites).
+		\item Recursive polyadenylation: reads classified as pre-mRNA\textsuperscript{a}, spanning between two PAS (avg. distance 531 nt). Suggesting that pre-mRNA with poly(A) tail can be cleaved again (at earlier PAS) and also polyadenylated again there.
+	\end{itemize}
+	
+	\subsection{Single-molecule kinetics of cleavage and termination}
+	\begin{itemize}
+		\item Use pre-mRNA\textsuperscript{e} extending beyond distal PAS. Classified as cleaved vs. uncleaved, based on their 5' end.
+		\item They model:
+		\begin{itemize}
+			\item $C_{50}$: distance beyond PAS where 50\% transcripts are cleaved.
+			\item $T_{50}$: distance beyond PAS where density of Pol II active site drop to 50\% of coverage downstream of PAS.			
+		\end{itemize}
+		\item They estimate $C_{50}$ to 2.1kb (lower bound, because of issues with max. read lenght).
+		\item Estimate of $T_{50}$ of 2.3kb. 
+		\item When both estimates were available, the median difference was about 95 nt.
+	\end{itemize}
+	
+	\subsection{Discrepant evidence for co-transcriptional splicing catalysis}
 
 	
 	
