@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage[authoryear]{natbib}
+\bibliographystyle{apalike}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{authblk}
+\usepackage[hidelinks]{hyperref}
+
+
+
+\title{Single-molecule multimodal timing of in vivo mRNA synthesis}
+\author{JC notes}
+
+\date{24th March, 2026}
+
+\begin{document}	
+	
+	\maketitle
+	
+	\section{Abstract}
+	\begin{itemize}
+		\item Poly(A) tail measurement to distinguish transcribing vs. poly(A) transcripts.
+		\item Splicing is much more delayed than previously tought, for at least 10 kb. 
+		\item Splicing mostly apparent only in poly(A) transcripts $\to$ they think it's delayed mostly after 3' end formation. 
+		\item Lots of $\text{m}^{6}$A on unspliced RNA $\to$ deposition of $\text{m}^{6}$A happens before splicing.
+		\item $\text{m}^{6}$A supressed around exon boundaries $\to$ $\text{m}^{6}$A topology should be established before EJC deposition.
+		\item 3' end cleavage occurs multiple kbs behind transcription and is coordinated with transcription termination. The 3' end formation is recursive in many genes.
+		\item Overall, they think that cleavage, termination and $\text{m}^{6}$A deposition occur earlier than most of the splicing.
+	\end{itemize}
+	
+	\section{Intro}
+	\begin{itemize}
+		\item Spliceosome assembly is known to be rapid. 
+		\item Splicing kinetics: estimates vary across methods.
+		\item Previously, it was tought that EJC prevents $\text{m}^{6}$A deposition at exon boundaries. Here, they argue that $\text{m}^{6}$A is placed before splicing (and thus, before EJC placement).
+		\begin{itemize}
+			\item $\text{m}^{6}$A methylation machinery is known to interact with Pol II $\to$ permitting co-transcriptional methylation.
+		\end{itemize}
+		
+	\end{itemize}
+	
+	\section*{Poly(A) notes}
+	\begin{itemize}
+		\item Poly(A) site: cannonical AAUAAA motif.
+		\item When Pol II reaches it, it keeps transcribing.
+		\item Protein complex cut RNA there; poly(A) polymerase (PAP) adds ~ 200 As.
+		\item Transcription termination:
+		\begin{itemize}
+				\item Torpedo model: Exonuclease XRN2 start chewing the 5' end of RNA still transcribed by Pol II $\to$ when it catches Pol II, it knocks it of DNA.
+				\item Allosteric model: Pol II changes conformation at poly(A) site, becomes less stable and eventually falls of DNA.
+		\end{itemize}
+	\end{itemize}
+	
+	\section{Results}
+	\subsection{Development of a multimodal direct pre-mRNA sequencing technique}
+	\begin{itemize}
+		\item Need to distinguish whether pre-mRNA has a poly(A) tail:
+		\begin{itemize}
+			\item pre-mRNA\textsuperscript{e}: undergoing transcription.
+			\item pre-mRNA\textsuperscript{a}: polyadenylated pre-mRNA, undergoing post-transcriptional maturation.
+		\end{itemize}
+		\item They pulled Pol II with associated pre-mRNA via immunoprecipitation. The pre-mRNA\textsuperscript{a} was still somehow pulled (even thought it was already cleaved - otherwise it would not have the poly(A) tail); probably was somehow attached via the cleavage complex, or some chromatin components.
+		\item They got about 90\% of pre-mRNA\textsuperscript{e} and 10\% pre-mRNA\textsuperscript{a}.  
+		\item 95\% of pre-mRNA\textsuperscript{e} have unspliced introns, while this is only 58\% for  pre-mRNA\textsuperscript{a}.
+		\item Nanopore sequencing requires poly(A) tail $\to$ added artificially during library preparation. This \textit{in vitro} poly(A) tail is shorter (20-80nt), so they get bimodal distribution of tail lengths, and classify by cut-off.
+		\begin{itemize}
+			\item Also, the reads classified as pre-mRNA\textsuperscript{a} have the start of poly(A) highly enriched by known poly(A) sites.
+		\end{itemize}
+		
+	\end{itemize}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}

@@ -43,7 +43,7 @@
 	
 	Our distribution is $N(\mu, \sigma^2)$ with PDF 
 	$$
-	f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( \frac{\left( x-\mu \right)^2 }{2\sigma^2} \right)
+	f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{\left( x-\mu \right)^2 }{2\sigma^2} \right)
 	$$
 	
 	We may emphasize that the part $\frac{1}{\sqrt{2 \pi \sigma^2}}$ does not depend on $x$, and that the charasteristic shape of Gaussin is given (ommiting parameters) by the function $\exp(-x^2)$ (easy to remember, compared to the whole formula for PDF. This is also part from which the sum of squares will appear, after $\exp(.)$ cancels with $\log(.)$ in negative log-likelihood).
@@ -56,7 +56,7 @@
 	 $$\arg \max f(x) = \arg \max \log(f(x))$$
 	 so if we want to maximize likelihood, we may equivalently maximize log-likelihood
 	 $$
-	 l(\mu, \sigma^2) = \log \left( L(\mu, \sigma^2) \right) = \log \left( \prod_{i=1}^{n} f(x_i | \mu, \sigma^2) \right) = \frac{n}{\sqrt{2 \pi \sigma^2}} + \frac{1}{2\sigma^2} \sum_{i=1}^{n} (x-\mu)^2
+	 l(\mu, \sigma^2) = \log \left( L(\mu, \sigma^2) \right) = \log \left( \prod_{i=1}^{n} f(x_i | \mu, \sigma^2) \right) = \log \left( \frac{n}{\sqrt{2 \pi \sigma^2}} \right) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (x-\mu)^2
 	 $$
 	 So here we see the sum of squares term $\sum_{i=1}^{n} (x-\mu)^2$, plus bunch of stuff that do not depend on $\mu$.
 	 
