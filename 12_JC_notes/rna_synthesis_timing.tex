@@ -48,7 +48,7 @@
 		\item Protein complex cut RNA there; poly(A) polymerase (PAP) adds $\sim 200$ As.
 		\item Transcription termination:
 		\begin{itemize}
-				\item Torpedo model: Exonuclease XRN2 start chewing the 5' end of RNA still transcribed by Pol II $\to$ when it catches Pol II, it knocks it of DNA.
+				\item Torpedo model: Exonuclease XRN2 starts chewing the 5' end of RNA still transcribed by Pol II $\to$ when it catches Pol II, it knocks it off DNA.
 				\item Allosteric model: Pol II changes conformation at poly(A) site, becomes less stable and eventually falls of DNA.
 		\end{itemize}
 	\end{itemize}
@@ -91,8 +91,41 @@
 		\item When both estimates were available, the median difference was about 95 nt.
 	\end{itemize}
 	
+	\section*{Splicing notes}
+	\begin{itemize}
+		\item \textbf{Spliceosome}: consists of snRNA and proteins. Recognizes 5' splicing site (GU), 3' site (AG), and \textbf{branch point A} (about 20-50nt from the 3' site).
+		\item \textbf{Step 1}: Adenosine at branching point attack the 5' site, cutting the exon and forming a covalent bond with the intron $\to$ forming a loop (\textbf{lariat}).
+		\item \textbf{Step 2}: The 5' exon free end attack the 3' site, forming a covalent exon-exon bond, releasing the lariat out.
+	\end{itemize}
+	
 	\subsection{Discrepant evidence for co-transcriptional splicing catalysis}
+	\begin{itemize}
+		\item Discrepancy in splicing: pre-mRNA\textsuperscript{e} ending in exons often show upstream introns as spliced, but pre-mRNA\textsuperscript{e} ending in introns does not.
+		
+	\end{itemize}
 
+	\subsection{Catalytic intermediates inflate co-transcriptional splicing estimates}
+
+	\begin{itemize}		
+		\item Catalytic intermediates (CI*): ending exactly at 5' exon - after step 1 of splicing, but before step 2 is finished.
+	\end{itemize}
+
+\subsection{Elongating pre-mRNA is globally unspliced for thousands of nucleotides}
+\begin{itemize}		
+	\item To avoid contamination by CI*, they analyzed pre-mRNA\textsuperscript{e} ending in the last intron, and also after PAS (but before polyadenylation) $\to$ about $\sim 90\%$ of upstream introns unspliced. Median context of such analysis was 2-3 kb.
+\end{itemize}
+
+\subsection{Splicing catalysis is deferred until after polyadenylation}
+\begin{itemize}		
+	\item Pre-mRNA\textsuperscript{a} was somehow spliced (27\% fully, 33\% partially, 40\% not).
+\end{itemize}
+
+\subsection{The quantitative landscape of pre-mRNA m6A}
+\begin{itemize}		
+	\item They basecalled $\text{m}^{6}$A, about 200k sites, mostly known (DR\underline{A}CH motif). Using both total RNA (long reads, but without immunoprecipitation) and pre-mRNA.
+	\item On pre-mRNA, $\text{m}^{6}$A was $\sim 17 \times$ depleted on introns. Somewhat smooth transition around exon-intron boundaries.
+	\item $\text{m}^{6}$A sites found in pre-mRNA almost always found also in total RNA.
+\end{itemize}
 	
 	
 	
