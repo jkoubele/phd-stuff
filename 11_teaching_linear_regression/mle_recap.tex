@@ -1,0 +1,73 @@
+\documentclass{beamer}
+\usepackage{animate}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetheme{Madrid}
+\usepackage{tikz}
+\usepackage{soul}
+\usepackage[normalem]{ulem}
+\graphicspath{{./figures/}}
+
+\useinnertheme{circles}
+%Information to be included in the title page:
+\title{Maximum likelihood estimation (MLE) recap}
+\author{Jakub Koubele}
+\date{13th April, 2026}
+
+\renewcommand{\insertshortauthor}{Jakub Koubele}  
+\renewcommand{\insertshorttitle}{Maximum likelihood estimation}
+\renewcommand{\insertshortdate}{13th April, 2026} % Define custom text for 3rd block
+
+\usepackage{amsthm}
+\newcommand*{\QED}{\hfill\ensuremath{\blacksquare}}
+
+
+
+
+
+\begin{document}
+	\frame{\titlepage}
+	
+	
+	\begin{frame}
+		\frametitle{Introduction}	
+		\pause		
+		\begin{itemize}
+		\item If we have some \textbf{data}, we may want to fit a \textbf{model} on them. \pause
+		\item Broadly, our motivation for modeling the data may be:
+			\begin{itemize}
+				\item We may want to \textbf{predict} future/hidden outcomes (e.g., diagnose a patient based on symptoms and biomarkers).
+				\item We may want to \textbf{infer} causality/associations (e.g., how lifestyle choices influence lifespan).
+			\end{itemize}
+			
+		\pause
+		\item Many models are \textbf{probability distributions}.
+		\begin{itemize}
+			\item These may be 'simple' distributions (e.g., normal distribution), different sort of (generalized-) linear models, artificial neural networks, etc.
+		\end{itemize}
+		\pause
+		\item Probability distribution models are most commonly fit by \textbf{maximum likelihood estimation} (MLE).
+		
+		
+		\end{itemize}		
+	\end{frame}	
+	
+	
+	\begin{frame}
+		\frametitle{Gaussian (normal) distribution}
+		\begin{itemize}
+			\item Consider the Gaussian distribution, given by a density function
+			$$
+			f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{\left( x-\mu \right)^2 }{2\sigma^2} \right)
+			$$
+			where $\mu \in \mathbb{R}, \sigma^2 \in \mathbb{R}_+$ are \textbf{parameters}.
+			\item We have some data e.g., measurements of physical height of people in some population. E.g.,
+			$$
+			X = \{ 161cm, \}
+			$$
+		\end{itemize}
+	\end{frame}	
+	
+	
+	
+\end{document}
