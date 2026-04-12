@@ -61,12 +61,103 @@
 			f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{\left( x-\mu \right)^2 }{2\sigma^2} \right)
 			$$
 			where $\mu \in \mathbb{R}, \sigma^2 \in \mathbb{R}_+$ are \textbf{parameters}.
-			\item We have some data e.g., measurements of physical height of people in some population. E.g.,
+			\pause
+			\item We are given some data e.g., measurements of physical height. E.g. we may have $n=5$ observations like this:
 			$$
-			X = \{ 161cm, \}
+			X = \{ 161\text{ cm}, 193\text{ cm}, 147\text{ cm}, 181\text{ cm}, 175\text{ cm}\}
 			$$
+			\pause
+			\item Our task is to estimate the parameters from the data.
+			
 		\end{itemize}
 	\end{frame}	
+
+\begin{frame}
+	\frametitle{Likelihood function}
+	\begin{itemize}
+		\item Recall the definition of likelihood function:
+		$$
+		L(\mu, \sigma^2) = \prod_{i=1}^{n} f(x_i \mid \mu, \sigma^2)
+		$$
+		\pause
+		\item We may plot the likelihood (for a specific data $X$ from the example above):	
+		
+			
+	\end{itemize}
+\vspace{0.3cm}
+
+\begin{columns}
+	\column{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.95\linewidth]{likelihood_full.png}
+	
+	\column{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.95\linewidth]{likelihood.png}
+\end{columns}
+\end{frame}	
+
+\begin{frame}
+	\frametitle{Log-likelihood}
+	\begin{itemize}
+		\item Optimizing the likelihood function directly is cumbersome, due to the product term. Fortunately, for all positive functions $f(x)$, it is
+		$$
+		\arg \max f(x) = \arg \max \log(f (x))
+		$$
+		\pause
+		\item So instead of maximizing likelihood, we may equivalently maximize log-likelihood, given as:
+				
+		\begin{align*}
+			l(\mu, \sigma^2)
+			&=\log \left( L(\mu, \sigma^2) \right)
+			=\log \left( \prod_{i=1}^{n} f(x_i \mid \mu, \sigma^2) \right)			 \\
+			&= \sum_{i=1}^{n} \log f(x_i \mid \mu, \sigma^2)
+		\end{align*}
+		
+\end{itemize}		
+	
+\end{frame}	
+
+\begin{frame}
+	\frametitle{Log-likelihood: visualization}
+	
+	\centering
+	\includegraphics[width=0.75\linewidth]{log_likelihood.png}	
+	
+\end{frame}	
+
+\begin{frame}
+	\frametitle{Solving for $\hat{\mu}$}
+	
+	
+	
+	
+	\pause
+	\begin{itemize}
+		\item We have	
+		\begin{align*}
+			l(\mu, \sigma^2)
+			&= \log \left( \prod_{i=1}^{n} f(x_i \mid \mu, \sigma^2) \right)	\\
+			&= -\frac{n}{2}\log(2\pi\sigma^2)
+			- \frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2
+		\end{align*}
+	\pause
+	\item Differentiating with respect to $\mu$:
+	$$
+	\frac{\partial l(\mu, \sigma^2)}{\partial \mu} = \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu)
+	$$	
+	\pause
+	\item By setting the derivative to 0 and solving for $\mu$, we get
+	$$
+	\hat{\mu} = \frac{1}{n} \sum_{i=1}^{n} x_i
+	$$		
+		
+	\end{itemize}
+	
+		
+	
+\end{frame}	
+
 	
 	
 	
