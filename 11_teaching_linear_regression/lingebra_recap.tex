@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{bm}
+\DeclareMathOperator*{\argminA}{arg\,min}
+\title{Linear algebra recap}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+\date{}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amssymb}
+%\newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\graphicspath{ {/} }
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{blindtext}
+
+
+
+\usepackage{amsthm}
+
+\begin{document}
+	
+	\maketitle
+	\section*{Motivation: linear model}
+	We would like to discuss the linear regression model, given as
+	$$
+	\bm{y} = X\bm{\beta} + \bm{\epsilon}
+	$$
+	where $\bm{y} \in \mathbb{R}^n$, $X \in \mathbb{R}^{n \times m}$, $\bm{\beta} \in \mathbb{R}^m$, $\bm{\epsilon} \in \mathbb{R}^n$.
+	
+	\section*{Matrix operations}
+	
+	
+	\subsection*{Matrix multiplication}
+	
+	Let $A \in \mathbb{R}^{n \times p}$, $B \in \mathbb{R}^{p \times m}$.
+	
+	We will use indices to denote individual elements of a matrix: $A_{ij}$ denotes the element in the $i$-th row and $j$-th column of the matrix $A$.
+	
+	We define the matrix product $C = AB$ as $C \in \mathbb{R}^{n \times m}$, where
+	$$
+	C_{ij} = \sum_{k=1}^{p} A_{ik} B_{kj}.
+	$$
+	
+	Note that:
+	\begin{itemize}
+		\item Matrix multiplication is defined only if the number of columns of $A$ equals the number of rows of $B$.
+		\item Matrix multiplication is not commutative, i.e.\ generally $AB \neq BA$.
+	\end{itemize}
+	
+	\subsection*{Identity matrix}
+	
+	The identity matrix $I \in \mathbb{R}^{n \times n}$ is a diagonal matrix with ones on the diagonal (and zeros elsewhere). For example, for $n=3$:
+	$$
+	I = 
+	\begin{bmatrix}
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 1
+	\end{bmatrix}.
+	$$
+	
+	For any $A \in \mathbb{R}^{n \times n}$, we have
+	$$
+	AI = IA = A.
+	$$
+	
+	\subsection*{Inverse matrix}
+	
+	For $A \in \mathbb{R}^{n \times n}$, the inverse matrix $A^{-1}$ is defined (if it exists) such that
+	$$
+	AA^{-1} = A^{-1}A = I.
+	$$
+	
+	The inverse does not exist for all matrices. If $A^{-1}$ exists, we say that $A$ is \textbf{invertible} (or \textbf{regular}); otherwise, $A$ is called \textbf{singular}.
+	
+	\subsection*{Transpose}
+	
+	For $A \in \mathbb{R}^{n \times p}$, the transpose is defined as $A^T \in \mathbb{R}^{p \times n}$ such that
+	$$
+	(A^T)_{ij} = A_{ji}.
+	$$
+	
+	That is, rows of $A$ become columns of $A^T$, and columns of $A$ become rows of $A^T$.
+	
+	Properties:
+	\begin{itemize}
+		\item $(A^T)^T = A$
+		\item $(AB)^T = B^T A^T$
+	\end{itemize}
+	
+	A matrix $A \in \mathbb{R}^{n \times n}$ is called \textbf{symmetric} if $A^T = A$.
+	
+	\subsection*{Derivatives with respect to vectors}
+	
+	Let $\bm{a}, \bm{b} \in \mathbb{R}^n$, $A \in \mathbb{R}^{n \times n}$.
+	
+	\begin{itemize}
+		\item $\frac{\partial}{\partial \bm{b}} \left( \bm{a}^T \bm{b} \right)
+		= \frac{\partial}{\partial \bm{b}} \left( \bm{b}^T \bm{a} \right)
+		= \bm{a}$
+		
+		\item $\frac{\partial}{\partial \bm{b}} \left( \bm{b}^T A \bm{b} \right)
+		= (A + A^T)\bm{b}$
+		
+		\item If $A$ is symmetric ($A^T = A$), then
+		$$
+		\frac{\partial}{\partial \bm{b}} \left( \bm{b}^T A \bm{b} \right)
+		= 2A\bm{b}
+		$$
+	\end{itemize}
+	
+\section*{Linear model - solving for $\bm{\beta}$}
+\begin{itemize}
+	\item Loss function (obtained from negative log-likelihood) is 
+	\begin{align*}
+		\bm{\epsilon}^T \bm{\epsilon}
+		&= \left( \bm{y} - X\bm{\beta} \right)^T \left( \bm{y} - X\bm{\beta} \right) \\
+		&= \bm{y}^T \bm{y} - \bm{y}^T X\bm{\beta} - \bm{\beta}^T X^T \bm{y} + \bm{\beta}^T X^T X \bm{\beta} \\
+		&= \bm{y}^T \bm{y} - 2 \bm{\beta}^T X^T \bm{y} + \bm{\beta}^T X^T X \bm{\beta}
+	\end{align*}
+	
+	\item Setting the derivative (with respect to $\bm{\beta}$) to 0:
+	\begin{align*}
+		\frac{\partial \bm{\epsilon}^T \bm{\epsilon}}{\partial \bm{\beta}}
+		&= -2X^T \bm{y} + 2X^T X\bm{\beta} = 0
+	\end{align*} 
+	
+	\item From that, we have 
+	\begin{align*}
+		X^T X\bm{\beta} = X^T \bm{y}
+	\end{align*} 
+	
+	\item Multiplying from the left by $\left( X^T X \right)^{-1}$ gives
+	$$
+	\hat{\bm{\beta}} = \left( X^T X \right)^{-1} X^T \bm{y}
+	$$
+	Note: $\left( X^T X \right)^{-1}$ may not exists!
+\end{itemize}
+	
+	\section*{Additional resources}
+	\begin{itemize}
+		\item \href{https://www.youtube.com/watch?v=fNk_zzaMoSs&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab}{Essence of linear algebra} - YouTube series by 3Blue1Brown. 
+		\item Chapter 2 of \href{https://www.deeplearningbook.org}{Goodfellow's Deep Learning textbook}.
+	\end{itemize}
+	
+		
+	\end{document}
