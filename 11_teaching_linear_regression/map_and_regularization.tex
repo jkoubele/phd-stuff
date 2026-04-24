@@ -1,0 +1,131 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{animate}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetheme{Madrid}
+\usepackage{tikz}
+\usepackage{soul}
+\usepackage[normalem]{ulem}
+\graphicspath{{./figures/}}
+
+\useinnertheme{circles}
+%Information to be included in the title page:
+\title{Maximum a posteriori (MAP) estimation}
+\author{Computational Biology II }
+\date{28th April, 2026}
+
+\renewcommand{\insertshortauthor}{Computational Biology II }  
+\renewcommand{\insertshorttitle}{Maximum a posteriori (MAP) estimation}
+\renewcommand{\insertshortdate}{28th April, 2026} % Define custom text for 3rd block
+
+\usepackage{amsthm}
+\newcommand*{\QED}{\hfill\ensuremath{\blacksquare}}
+
+
+
+
+
+\begin{document}
+	\frame{\titlepage}
+	
+	
+	
+	\begin{frame}
+		\frametitle{Likelihood and log-likelihood}
+		\begin{itemize}
+			\item Previously, we introduced the likelihood function:
+			$$
+			L(\bm{\theta}) = p(D \mid \bm{\theta}) = \prod_{i=1}^{n} p(d_i \mid \bm{\theta})
+			$$		
+			where $\bm{\theta}$ is the set of model parameters, $p(.)$ is a probability density function, and $D = \{ d_1,...,d_n\}$ are i.i.d. observations.
+			\pause
+			\item Maximum likelihood estimation (MLE):
+			$$
+			\hat{\bm{\theta}}_{MLE} = \arg\max_{\bm{\theta}} \; L(\bm{\theta})
+			$$
+			\pause
+			\item Maximizing likelihood is equivalent to maximizing log-likelihood, given as 
+			$$
+			\ell(\bm{\theta}) = \log L(\bm{\theta}) = \sum_{i=1}^{n} \log p(d_i \mid \bm{\theta})
+			$$
+		\end{itemize}
+	
+		
+	\end{frame}	
+	
+	\begin{frame}
+		\frametitle{Posterior distribution of parameters}
+		\begin{itemize}
+			\item So far, we focused on $p(D \mid \bm{\theta})$. What about $p(\bm{\theta} \mid D)$?
+			\pause
+			\item \textbf{Bayes theorem} gives us
+			$$
+			p(\bm{\theta} \mid D) = \frac{p(D \mid \bm{\theta}) p(\bm{\theta})}{p(D)}
+			$$ 	
+			where:
+			\begin{itemize}
+				\item $p(\bm{\theta} \mid D)$ is the \textbf{posterior}.
+				\item $p(D \mid \bm{\theta}) = L(\bm{\theta}) $ is the \textbf{likelihood}.
+				\item $p(\bm{\theta})$ is the \textbf{prior}.
+				\item $p(D)$ is the \textbf{evidence term}.
+			\end{itemize}		
+		\end{itemize}
+	\end{frame}	
+	
+		
+	\begin{frame}
+		\frametitle{Maximum a posteriori (MAP)}
+		\begin{itemize}
+			\item Instead of maximizing likelihood (MLE), we may decide to maximize posterior (MAP):
+			$$
+			\hat{\bm{\theta}}_{MAP} = \arg\max_{\bm{\theta}} p(\bm{\theta} \mid D)
+			$$	
+			\pause
+			\item Again, it will be useful to maximize its logarithm instead:
+			\begin{align*}			
+				\log p(\bm{\theta} \mid D)
+				&= \log \left(\frac{p(D \mid \bm{\theta}) p(\bm{\theta})}{p(D)}\right) \\
+				&= \log	p(D \mid \bm{\theta}) + \log 	p(\bm{\theta})	- \log 	p(D)					
+			\end{align*}
+			\pause
+			\item From that, we get
+			$$
+			\hat{\bm{\theta}}_{MAP} = \arg\max_{\bm{\theta}}\; \ell(\bm{\theta}) + \log p(\bm{\theta})
+			$$
+			
+		
+		\end{itemize}
+		
+	\end{frame}
+		\begin{frame}
+			\frametitle{Example: ridge regression}
+			\begin{itemize}
+				\item Consider a linear model parametrized by $\bm{\beta} = [\beta_0, \beta_1,...,\beta_p]^T$
+				\pause
+				\item We assume Gaussian prior on the parameters:
+				$$
+				\beta_i \sim N(0, \sigma^2) \quad \forall i \in \{1,...,p\}
+				$$
+				where the density function is 
+				$$
+				p(\beta_i) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{\beta_i^2 }{2\sigma^2} \right)
+				$$
+				\pause
+				\item We have
+				$$
+				\log p(\beta_i) = \log \left( \frac{1}{\sqrt{2 \pi \sigma^2}} \right) - \frac{\beta_i^2 }{2\sigma^2}
+				$$
+				\pause
+				\item MAP leads to the penalty:
+				$$
+				\lambda \sum_{i=1}^{p} \beta_i^2, \qquad \lambda = \frac{1}{2\sigma^2}
+				$$			
+				
+			\end{itemize}
+\end{frame}
+	
+	
+\end{document}
