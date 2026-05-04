@@ -7,6 +7,12 @@
 \usepackage{soul}
 \usepackage[normalem]{ulem}
 \graphicspath{{./figures/}}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue
+}
 
 \useinnertheme{circles}
 %Information to be included in the title page:
@@ -107,7 +113,7 @@
 	\begin{itemize}
 		\item Gini index is defined as 
 		$$G = 1 - \sum_{k=1}^{K} p_k^2$$
-		where $p_k$ is a fraction of k-th class (out of K classes) in the node.	
+		where $p_k$ is the fraction of class $k$ among samples in the node.
 		
 		\item Equals the probability of misclassification (if labels are assigned according to class proportions).
 		\item Used to train classification trees.
@@ -176,6 +182,9 @@
 \begin{frame}
 	\frametitle{Random Forest} 
 	
+	\centering
+	\includegraphics[width=0.35\linewidth]{forest}
+	
 	\begin{itemize}    
 		\item Uses bootstrapping to generate many training datasets from the original data.
 		\item Train deep trees on these datasets and average their predictions.
@@ -183,7 +192,7 @@
 			\item Reduces variance while keeping low bias.
 		\end{itemize}	
 		\pause	
-		\item Additional randomness: at each tree split, consider only a random subset of features.
+		\item Additional randomness: at each split, consider only a random subset of features.
 		\begin{itemize}
 			\item Reduces correlation between trees.
 			\item May also prevent trees from getting stuck in local optima during training.
@@ -191,6 +200,77 @@
 	\end{itemize}
 	
 \end{frame}
+
+\begin{frame}
+	\frametitle{Out-of-bag (OOB) samples} 
+	\centering
+	\includegraphics[width=0.75\linewidth]{oob}
+	\begin{itemize}
+		\item For every tree, observations not sampled by bootstrap (out-of-bag, OOB) may be used as a test set.
+		\item For each observation, aggregate predictions from the trees where it was out-of-bag.
+		\begin{itemize}
+			\item Provides an estimate of the test error of the whole random forest.
+		\end{itemize}
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Feature importance} 
+	\centering
+	\includegraphics[width=0.75\linewidth]{feature_importance}
+	\begin{itemize}
+		\item Randomly permute a feature in OOB samples (breaking its relationship with the outcome) and measure the decrease in prediction performance.
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Boosting} 
+	
+\begin{itemize}
+	\item \textbf{AdaBoost} (adaptive boosting): 
+	\begin{itemize}
+		\item Sequentially train very shallow trees (so-called \textit{decision stumps}).
+		\item Models aim to minimize a weighted loss (samples have weights).
+		\item Misclassified samples get higher weight, so future models focus on them.
+		\item Combine models using a weighted average (better models get higher weight).
+	\end{itemize}
+\pause
+
+\item \textbf{Gradient boosting} (e.g. XGBoost):
+\begin{itemize}
+	\item Similar idea: sequentially add models to correct previous errors.
+	\item Fit new models to the gradients of the loss (for RSS, this corresponds to residuals).
+	\item Uses small trees (deeper than decision stumps).
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{AdaBoost visualization} 
+	
+	\centering
+	\includegraphics[width=0.58\linewidth]{adaboost}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{The End} 
+	
+	\centering
+	\includegraphics[width=0.58\linewidth]{the_end}
+	
+	
+	\textbf{Acknowledgment}:
+	\begin{itemize}
+		\item  Adapted from Prof. Andreas Beyer's slides.
+		\item Jan Drchal (@CTU Prague) \href{https://cw.fel.cvut.cz/b221/_media/courses/be4m33ssu/ensembling_ws2022.pdf}{slides}.
+		\item Tree drawings are AI-generated (ChatGPT).
+	\end{itemize}
+\end{frame}
+
+
+
 
 
 
