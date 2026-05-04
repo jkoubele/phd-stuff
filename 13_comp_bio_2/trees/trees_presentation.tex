@@ -10,12 +10,12 @@
 
 \useinnertheme{circles}
 %Information to be included in the title page:
-\title{Decision Trees and Random Forrest}
+\title{Decision Trees and Random Forest}
 \author{Comp. Bio II}
 \date{5th May, 2026}
 
 \renewcommand{\insertshortauthor}{Comp. Bio II}  
-\renewcommand{\insertshorttitle}{Decision Trees and Random Forrest}
+\renewcommand{\insertshorttitle}{Decision Trees and Random Forest}
 \renewcommand{\insertshortdate}{5th May, 2026} % Define custom text for 3rd block
 
 \usepackage{amsthm}
@@ -114,6 +114,86 @@
 	\end{itemize}
 	
 \end{frame}
+
+	
+\begin{frame}
+	\frametitle{Bias-variance trade-off}
+	\begin{itemize}    
+		\item \textbf{Shallow trees}: low variance, high bias (may miss complex patterns).    
+		\item \textbf{Deep trees}: low bias, high variance (prone to overfitting).    
+		
+		\item The trade-off can be controlled by model parameters (e.g. tree depth, minimum node size).
+		\pause        
+		\item Can we get the best of both worlds?
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Ensembling methods}
+	\begin{itemize}    
+		\item Idea: train multiple models, average their predictions.
+		\pause
+		\item \textbf{Bagging} (Bootstrap aggregating):
+		\begin{itemize}
+			\item Sample different training sets from the original data.
+			\item Train \textit{high variance, low bias} models (deep trees) on these sets and average them.
+			\item Exploits independence between models.
+		\end{itemize}
+	
+	\pause
+	\item \textbf{Boosting}:
+	\begin{itemize}
+		\item Sequentially train \textit{low variance, high bias} models (shallow trees).
+		\item Subsequent models learn to fix the mistakes of the previous ones.
+		\item Exploits dependence between models.
+	\end{itemize}
+	
+		
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Bootstrapping}
+	
+	\centering
+	\includegraphics[width=0.65\linewidth]{bootstrapping}
+	
+	\begin{itemize}
+		\item Resampling from the original training set (with replacement).
+		\begin{itemize}
+			\item Same number of observations.
+			\item Some observations may be sampled multiple times.
+			\item Some observations may not be sampled at all.
+		\end{itemize}
+		
+		\item Each resampling produces a slightly different version of the original data.
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Random Forest} 
+	
+	\begin{itemize}    
+		\item Uses bootstrapping to generate many training datasets from the original data.
+		\item Train deep trees on these datasets and average their predictions.
+		\begin{itemize}
+			\item Reduces variance while keeping low bias.
+		\end{itemize}	
+		\pause	
+		\item Additional randomness: at each tree split, consider only a random subset of features.
+		\begin{itemize}
+			\item Reduces correlation between trees.
+			\item May also prevent trees from getting stuck in local optima during training.
+		\end{itemize}			
+	\end{itemize}
+	
+\end{frame}
+
+
+
 
 
 	
