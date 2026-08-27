@@ -1,0 +1,107 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\setlength{\jot}{10pt} % extra leading between lines of multi-line displays
+
+% Spacing between displayed equations and surrounding text. Appended to \normalsize
+% because the display skips are reset on every font size change.
+\makeatletter
+\g@addto@macro\normalsize{%
+	\setlength{\abovedisplayskip}{12pt plus 3pt minus 4pt}%
+	\setlength{\belowdisplayskip}{12pt plus 3pt minus 4pt}%
+	\setlength{\abovedisplayshortskip}{2pt plus 3pt}%
+	\setlength{\belowdisplayshortskip}{8pt plus 3pt minus 4pt}%
+}
+\makeatother
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage[authoryear]{natbib}
+\bibliographystyle{apalike}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{authblk}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage{xurl} % Allows URLs to be broken over lines anywhere, not just at a few characters.
+\usepackage{nameref}
+\usepackage[most]{tcolorbox}
+
+% Lets TeX stretch the spacing a little further on a final pass, rather than letting a line
+% overrun into the margin when it finds no break within its usual tolerance.
+\emergencystretch=1em
+
+% Spacing that sets the figures apart from the surrounding text. \intextsep applies to a figure
+% placed within the text, \textfloatsep to one placed at the top or the bottom of a page.
+\setlength{\intextsep}{22pt plus 4pt minus 4pt}
+\setlength{\textfloatsep}{24pt plus 4pt minus 4pt}
+\captionsetup{skip=10pt}
+
+
+\graphicspath{{./figures/}}
+
+
+\title{Retreat Presentation 2026}
+
+\author{Jakub Koubele}
+
+
+
+\date{}
+
+\begin{document}
+	
+	
+	\maketitle	
+	
+	\section*{Replacing Aging}	
+	\begin{itemize}
+		\item Growing organs: stem cells + scaffolds
+		\item Some organs already successfully produced in lab: e.g., bone marrow, skin.
+		\item Scaffolds needed for 3D structure (except for stuff like bone marrow, also growing just epidermis layer of skin does not need much scaffolding). Two main approaches for scaffolding:
+		\begin{itemize}
+			\item Tube scaffolds: electrically charged scaffold sprayed on tube with opposite charge, then remove the tube.
+			\item Bioprinting: more complex, similar to 3D printing, deposit layer by layer.
+		\end{itemize}
+		\item Overview paper \citep{pinaScaffoldingStrategiesTissue2019}. 
+	\item \textbf{Research groups}:
+	\begin{itemize}
+		\item Wake Forest Institute for Regenerative Medicine (WFIRM) \href{https://school.wakehealth.edu/research/institutes-and-centers/wake-forest-institute-for-regenerative-medicine}{link}. Large group doing lots of different organs.
+		\item Kimber group at Manchester uni (\href{https://research.manchester.ac.uk/en/persons/sue.kimber/}{link}). Did mini-kidney.
+	\end{itemize}	
+	
+	\end{itemize}
+
+	\section*{Organoids blogpost}
+	\textbf{Part 1} \href{https://www.owlposting.com/p/why-havent-organoids-solved-all-of}{blogpost}.
+	\begin{itemize}
+		\item \textbf{Spheroids}: 3D structure of single cell type. \textbf{Organoids}: more cell types, some function(s) of the organ. 
+		\item Review article \citep{lancasterOrganogenesisDishModeling2014}.
+		\item Organs vs. organoids: \citep{jensenOrganoidsAreNot2023}
+		\begin{itemize}
+			\item Points out difference between pluripotent stem cell (PSC) and tissue stem cell-derived (TSC) organoids. 
+			\item TSC are from biopsy  lineage-restricted, so should be more precise (but depend on the patient). Also applicable only for tissue where stem cells exists and can be collected (e.g., heart has no stem cells, in brain the biopsy would be too invasive).
+		\end{itemize}
+		\item Making organoids: Stem cells (TSC or PSC), Matrigel (gelatinous protein mixture), growth factors/small molecules.
+		\item \textbf{Matrigel}: gelatinous protein mixture secreted by Engelbreth-Holm-Swarm mouse sarcoma cells (cancer cells). Quite heterogenous (batch effect). Alternatives exists, but Matrigel still dominates (is easy to use).  Matrigel is produced by injecting the cancer cells into mice, waiting for the mice to grow tumors, then killing the mice and grinding up the tumors
+		\item \cite{glassCrosssiteReproducibilityHuman2024} tried to measure heterogenity across sites (same setup in all of them). Some aspect stayed consistent (e.g., cell composition), but lots of DE genes across organoids. 
+		\item Organoids are quite small - up to few millimeters in diameter.
+		\item Organoids are not vascularized, and it would be challenging to make them so \citep{lamontagneRecentAdvancementsFuture2022} :
+		\begin{itemize}
+			\item Oxygen gets in only via diffusion, up to 0.3mm. 
+			\item So organoids have \textbf{necrotic core}. This also influence the surrounding non-necrotic cells.
+			\item Drug delivery normally happens via blood stream, so this aspect is missing in drug experiments on organoids.
+		\end{itemize}
+		\item Organoids are lacking an immune system.
+		\item Organoids are from 'fetal-like' cells. Developmental stage thus differ from adult, e.g. isoform usage (e.g., oxidative enzyme CYP3A switches from CYP3A7 $\to$ CYP3A4). Applies to PSC organoids only, TSC-derived organoids don't have this issue.
+		\item Letting organoids to 'age', e.g., for 250 days: they move from fetal to postnatal stage, shown by \cite{gordonLongtermMaturationHuman2021}. The paper also used methylation clock, S. Horvath is co-author.
+	\end{itemize}
+
+	\textbf{Part 2} \href{https://www.owlposting.com/p/where-have-organoids-actually-been}{blogpost}.
+
+	
+	
+	\bibliography{references}
+
+	
+	
+\end{document}
