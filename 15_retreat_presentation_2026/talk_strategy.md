@@ -40,8 +40,16 @@ Plus a reality-check slide (trachea affair, see below), best placed after §3 or
 
 ### Tier 1 — the argument (read properly, ~1 day)
 
-1. **The diffusion limit.** Reuse `lamontagneRecentAdvancementsFuture2022`, already in
-   `references.bib` and already read. Just re-derive the number (~100–300 µm). Free slide.
+1. **`lamontagneRecentAdvancementsFuture2022` — READ THIS FIRST.** Already in `references.bib`
+   but not yet read. It is the bridge document: organoid vascularization is where every strategy
+   (co-differentiation/ETV2, assembloid fusion, transplantation into a host, microfluidics,
+   printed channels) gets compared side by side at small scale, so it is a miniature of this
+   whole talk and gives the taxonomy before the big bioprinting review. Also the best source for
+   the "why the obvious fix fails" beat: vessels form, but do not perfuse, and regress without
+   flow. Caveat: cortical-specific — take the strategies and failure modes as general, do not
+   generalize the BBB/neurovascular-unit material to liver/heart/kidney.
+   The topic is *not* Katrin's: the organoid **rung** is hers, vascularization is the **transition
+   between rungs**. She names it as the open problem and stops; this part picks it up.
 2. **One 2025/26 bioprinting review.** Pick ONE:
    - <https://www.sciencedirect.com/science/article/pii/S2405886625000806> (Dec 2025)
    - <https://pmc.ncbi.nlm.nih.gov/articles/PMC12743581/>
@@ -96,10 +104,56 @@ mechanics) — e.g. <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11256149/>
   contrast to blastocyst complementation ("or you can skip the human cells entirely"). Do not
   build a section on it.
 
+## Format and delivery (retreat = relaxed)
+
+Retreat talks are deliberately informal, and some of the other slots are on lighter topics than
+this one. Constraints agreed with the format:
+
+- **No equations on slides.** Anything quantitative becomes a picture or a comparison.
+- **Animations, short videos and figures are actively welcomed.** The beamer preamble in
+  `../CLAUDE.md` already loads `\usepackage{animate}`, so animated GIF/frame sequences work.
+- **Do not force interactivity.** One or two cheap moments are fine; this topic does not need
+  a game bolted onto it.
+
+### Equation → visual swaps
+
+| Was going to be | Becomes |
+|---|---|
+| Reaction–diffusion setup, `L_crit = sqrt(2 D C0 / R0)` | Spheroid section stained for hypoxia: proliferating rim → quiescent shell → necrotic core. The number is *visible*, no algebra |
+| The 230 µm worked number | **"About three sheets of paper"** (paper ≈ 0.1 mm). Tangible, memorable, zero maths |
+| `L ∝ sqrt(C0)`, so 2× oxygen buys 1.4× thickness | Two-bar comparison, one sentence: "you cannot fix this by turning up the gas" |
+| Krogh cylinder geometry | Simple schematic: capillary + the tissue cylinder it can supply, repeated into a grid = why capillary spacing is what it is |
+
+Keep the maths in `notes.tex` for Jakub's own understanding; none of it goes on a slide.
+
+### Home-made animation (cheap, high payoff)
+
+~30 lines of matplotlib: concentration-vs-depth profile as slab thickness increases, curve
+flattening to zero and a dead zone opening up at the far side. Export frames → `\animategraphics`.
+This is the single clearest way to show "consumption turns *slow* into *impossible*" without
+writing the PDE.
+
+### Video candidates (find and download during Day 1 PM)
+
+- **Grigoryan et al. 2019** — the hydrogel alveolus inflating while blood flows through the
+  adjacent vessel. Best single visual in the field. Science supplementary + heavy press coverage.
+- **FRESH printing** (Feinberg lab, CMU) — time-lapse of a collagen heart being printed.
+- **Ott 2008 / "ghost heart"** — decellularization footage, then the recellularized heart beating.
+- **Zurich liver perfusion machine** — ETH Zurich press video, pairs with the 1-week/3-day story.
+- Beating engineered heart tissue / cardiac organoid — any clean clip.
+
+### Interactivity, if it happens naturally (do not force)
+
+- Show of hands: *"How thick can living tissue be with no blood supply?"* → reveal 0.3 mm →
+  the three-sheets-of-paper comparison. ~20 seconds, no prep, makes the central number stick.
+- Nothing else is needed. The Macchiarini story and the Lindbergh anecdote already carry the
+  talk's informal register — narrative does the work that a forced activity would.
+
 ## Schedule
 
-- **Day 1 AM** — Tier 1 items 2 and 3 (bioprinting review + blastocyst complementation).
-  Dump into `notes.tex` as you go, same `\section*`-per-source style as the organoid notes.
+- **Day 1 AM** — LaMontagne first (the bridge document), then Tier 1 items 2 and 3
+  (bioprinting review + blastocyst complementation). Dump into `notes.tex` as you go, same
+  `\section*`-per-source style as the organoid notes.
 - **Day 1 PM** — Pina skim (1 h), embryo-model review, Tier 2 abstracts, trachea affair.
   Pull the figures you intend to use into `figures/` while you have the PDFs open.
 - **Day 2 AM** — **Stop reading.** Build the beamer skeleton (house style in `../CLAUDE.md`:
